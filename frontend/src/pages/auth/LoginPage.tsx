@@ -65,9 +65,9 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F5F5F7] dark:bg-[#000000] text-[#1D1D1F] dark:text-[#F5F5F7]">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100">
       {/* Left side: Hero Banner */}
-      <div className="relative hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-[#1C1C1E] text-white overflow-hidden">
+      <div className="relative hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-slate-950 text-white overflow-hidden border-r border-slate-800">
         {/* Background Image with Overlay */}
         <div
           className="absolute inset-0 z-0 bg-cover bg-center opacity-35 scale-105 transition-transform duration-1000"
@@ -75,39 +75,39 @@ export const LoginPage: React.FC = () => {
             backgroundImage: `url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1600&q=80')`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E] via-[#1C1C1E]/70 to-[#1C1C1E]/40 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-900/40 z-10" />
 
         {/* Logo */}
         <div className="relative z-20 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#007AFF] dark:bg-[#0A84FF] text-white shadow-xs">
-            <Globe2 className="h-5 w-5" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-teal-400 text-white shadow-md shadow-blue-500/25">
+            <Globe2 className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="font-bold text-xl tracking-tight text-white">{APP_NAME}</h1>
-            <p className="text-xs text-[#aeaeb2] font-medium">{APP_TAGLINE}</p>
+            <h1 className="font-extrabold text-xl tracking-tight text-white">{APP_NAME}</h1>
+            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{APP_TAGLINE}</p>
           </div>
         </div>
 
         {/* Hero Content */}
         <div className="relative z-20 max-w-lg space-y-5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0A84FF]/20 border border-[#0A84FF]/30 text-[#64D2FF] text-xs font-semibold backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Intelligent Travel Command Center</span>
+            <span>Intelligent Travel Platform</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight text-white">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white drop-shadow-sm">
             Transform ideas into seamless multi-city expeditions.
           </h2>
 
-          <div className="space-y-2.5 pt-2">
+          <div className="space-y-3 pt-2">
             {[
               'Interactive visual day-by-day itinerary builder',
               'Real-time budget tracking & smart expense forecasts',
               'Global city discovery with cost indexes & top activities',
               'Shareable travel itineraries for companions & group planning',
             ].map((feature, i) => (
-              <div key={i} className="flex items-center gap-2.5 text-xs text-[#aeaeb2]">
-                <CheckCircle2 className="w-4 h-4 text-[#30D158] flex-shrink-0" />
+              <div key={i} className="flex items-center gap-3 text-xs text-slate-300 font-medium">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                 <span>{feature}</span>
               </div>
             ))}
@@ -115,33 +115,33 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* Footer info */}
-        <div className="relative z-20 text-xs text-[#8E8E93]">
+        <div className="relative z-20 text-xs text-slate-500">
           © {new Date().getFullYear()} GlobeTrotter Inc. All rights reserved.
         </div>
       </div>
 
       {/* Right side: Login Form */}
       <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16">
-        <div className="w-full max-w-md space-y-6 bg-white dark:bg-[#1C1C1E] p-8 sm:p-10 rounded-2xl shadow-card border border-black/[0.08] dark:border-white/[0.10]">
+        <div className="w-full max-w-md space-y-6 bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800">
           {/* Form Header */}
           <div>
-            <div className="flex lg:hidden items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#007AFF] text-white">
-                <Globe2 className="h-4 w-4" />
+            <div className="flex lg:hidden items-center gap-2.5 mb-4">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
+                <Globe2 className="h-5 w-5" />
               </div>
-              <span className="font-bold text-lg tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7]">{APP_NAME}</span>
+              <span className="font-extrabold text-lg tracking-tight text-slate-900 dark:text-slate-100">{APP_NAME}</span>
             </div>
 
-            <h2 className="text-2xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
+            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
               Welcome back
             </h2>
-            <p className="mt-1 text-xs text-[#6E6E73] dark:text-[#98989D]">
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               Sign in to access your journeys and continue your travels.
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
               label="Email Address"
               type="email"
@@ -152,14 +152,14 @@ export const LoginPage: React.FC = () => {
             />
 
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100">
                   Password
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowForgotModal(true)}
-                  className="text-xs font-medium text-[#007AFF] dark:text-[#0A84FF] hover:underline"
+                  className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
                 >
                   Forgot password?
                 </button>
@@ -173,14 +173,14 @@ export const LoginPage: React.FC = () => {
               />
             </div>
 
-            <div className="pt-2 space-y-2.5">
+            <div className="pt-2 space-y-3">
               <Button
                 type="submit"
                 variant="primary"
                 size="md"
                 isLoading={isSubmitting}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="w-full bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white font-medium shadow-xs"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm shadow-blue-500/25 rounded-xl py-2.5"
               >
                 Sign In
               </Button>
@@ -188,7 +188,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleDemoFill}
-                className="w-full py-2 text-xs font-semibold text-[#007AFF] dark:text-[#0A84FF] bg-blue-500/10 hover:bg-blue-500/15 rounded-lg transition-colors border border-blue-500/20 cursor-pointer"
+                className="w-full py-2.5 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-xl transition-colors border border-blue-200 dark:border-blue-800/60 cursor-pointer"
               >
                 ⚡ Fill Demo Credentials (alex@globetrotter.io)
               </button>
@@ -196,10 +196,10 @@ export const LoginPage: React.FC = () => {
           </form>
 
           {/* Switch to Signup */}
-          <div className="text-center pt-2 border-t border-black/[0.06] dark:border-white/[0.08]">
-            <p className="text-xs text-[#6E6E73] dark:text-[#98989D]">
+          <div className="text-center pt-3 border-t border-slate-100 dark:border-slate-800">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Don't have an account?{' '}
-              <Link to="/signup" className="font-semibold text-[#007AFF] dark:text-[#0A84FF] hover:underline">
+              <Link to="/signup" className="font-bold text-blue-600 dark:text-blue-400 hover:underline">
                 Create an account
               </Link>
             </p>
@@ -215,7 +215,7 @@ export const LoginPage: React.FC = () => {
         description="Enter your registered email to receive a password reset link."
         maxWidth="sm"
       >
-        <form onSubmit={handleForgotSubmit} className="space-y-3 pt-2">
+        <form onSubmit={handleForgotSubmit} className="space-y-3.5 pt-2">
           <Input
             label="Email Address"
             type="email"
@@ -225,11 +225,11 @@ export const LoginPage: React.FC = () => {
             leftIcon={<Mail className="w-4 h-4" />}
             required
           />
-          <div className="flex items-center justify-end gap-2 pt-2">
-            <Button type="button" size="sm" variant="outline" onClick={() => setShowForgotModal(false)}>
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <Button type="button" size="sm" variant="outline" onClick={() => setShowForgotModal(false)} className="rounded-xl">
               Cancel
             </Button>
-            <Button type="submit" size="sm" variant="primary" className="bg-[#007AFF] text-white">
+            <Button type="submit" size="sm" variant="primary" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl">
               Send Reset Link
             </Button>
           </div>

@@ -119,15 +119,15 @@ export const ReservationsPage: React.FC = () => {
   const getTypeIcon = (t: Reservation['type']) => {
     switch (t) {
       case 'flight':
-        return <Plane className="w-4 h-4 text-brand-600 dark:text-brand-400" />;
+        return <Plane className="w-4 h-4 text-blue-600 dark:text-blue-400" />;
       case 'hotel':
-        return <Building className="w-4 h-4 text-blue-600 dark:text-blue-400" />;
+        return <Building className="w-4 h-4 text-teal-600 dark:text-teal-400" />;
       case 'train':
-        return <Train className="w-4 h-4 text-purple-600 dark:text-purple-400" />;
+        return <Train className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />;
       case 'restaurant':
-        return <Utensils className="w-4 h-4 text-accent-500 dark:text-accent-400" />;
+        return <Utensils className="w-4 h-4 text-amber-500" />;
       default:
-        return <Sparkles className="w-4 h-4 text-amber-500" />;
+        return <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />;
     }
   };
 
@@ -135,19 +135,19 @@ export const ReservationsPage: React.FC = () => {
     switch (status) {
       case 'confirmed':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/40 text-[11px] font-semibold">
             <CheckCircle2 className="w-3 h-3" /> Confirmed
           </span>
         );
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[11px] font-bold">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-900/40 text-[11px] font-semibold">
             <AlertCircle className="w-3 h-3" /> Pending
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 text-[11px] font-bold">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/40 text-[11px] font-semibold">
             <XCircle className="w-3 h-3" /> Cancelled
           </span>
         );
@@ -159,14 +159,11 @@ export const ReservationsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 text-xs font-bold uppercase tracking-wider mb-2">
-            <Ticket className="w-3.5 h-3.5" />
-            <span>Booking Management</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-sand-900 dark:text-[#F4F7F5] tracking-tight">
-            Reservations & Bookings
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+            <Ticket className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            <span>Reservations & Bookings</span>
           </h1>
-          <p className="text-sm text-sand-600 dark:text-[#A7B3AD] mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Track confirmation numbers, check-in times, and booking vouchers for flights, hotels, trains, and dining.
           </p>
         </div>
@@ -175,14 +172,14 @@ export const ReservationsPage: React.FC = () => {
           variant="primary"
           leftIcon={<Plus className="w-4 h-4" />}
           onClick={() => setShowAddModal(true)}
-          className="bg-brand-600 hover:bg-brand-700 dark:bg-brand-500 dark:text-sand-950 font-bold"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl px-4 py-2 shadow-2xs"
         >
           Add Booking
         </Button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
         {[
           { id: 'all', label: 'All Bookings' },
           { id: 'flight', label: 'Flights' },
@@ -194,10 +191,10 @@ export const ReservationsPage: React.FC = () => {
           <button
             key={t.id}
             onClick={() => setSelectedType(t.id)}
-            className={`px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap ${
+            className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all cursor-pointer whitespace-nowrap ${
               selectedType === t.id
-                ? 'bg-sand-900 dark:bg-brand-500 text-white dark:text-sand-950 shadow-2xs'
-                : 'bg-white dark:bg-[#121A18] border border-sand-300 dark:border-[#28342F] text-sand-600 dark:text-[#A7B3AD] hover:text-sand-900 dark:hover:text-white'
+                ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
+                : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
             {t.label}
@@ -209,7 +206,7 @@ export const ReservationsPage: React.FC = () => {
       {isLoading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} height={110} className="rounded-3xl" />
+            <Skeleton key={i} height={110} className="rounded-2xl" />
           ))}
         </div>
       ) : filtered.length > 0 ? (
@@ -217,53 +214,53 @@ export const ReservationsPage: React.FC = () => {
           {filtered.map((res) => (
             <div
               key={res.id}
-              className="bg-white dark:bg-[#121A18] p-5 rounded-3xl border border-sand-300 dark:border-[#28342F] shadow-card hover:shadow-soft transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+              className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
             >
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-2xl bg-sand-100 dark:bg-[#18221F] border border-sand-200 dark:border-[#28342F] flex-shrink-0">
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 flex-shrink-0">
                   {getTypeIcon(res.type)}
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-sm sm:text-base font-bold text-sand-900 dark:text-[#F4F7F5]">{res.title}</h3>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100">{res.title}</h3>
                     {getStatusBadge(res.status)}
                   </div>
-                  <p className="text-xs text-sand-600 dark:text-[#A7B3AD] font-medium">{res.provider}</p>
-                  <div className="flex items-center gap-4 text-xs text-sand-500 dark:text-[#A7B3AD] flex-wrap pt-1">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-sand-400" />
+                  <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold">{res.provider}</p>
+                  <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 flex-wrap pt-1 font-medium">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-slate-400" />
                       <span>{res.date}</span>
                     </span>
                     {res.time && (
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-sand-400" />
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-slate-400" />
                         <span>{res.time}</span>
                       </span>
                     )}
                     {res.location && (
-                      <span className="flex items-center gap-1 truncate max-w-xs">
-                        <MapPin className="w-3.5 h-3.5 text-sand-400" />
+                      <span className="flex items-center gap-1.5 truncate max-w-xs">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400" />
                         <span className="truncate">{res.location}</span>
                       </span>
                     )}
                   </div>
                   {res.notes && (
-                    <p className="text-[11px] text-brand-700 dark:text-brand-300 font-medium italic pt-1">{res.notes}</p>
+                    <p className="text-[11px] text-blue-700 dark:text-blue-300 font-medium italic pt-1">{res.notes}</p>
                   )}
                 </div>
               </div>
 
               {/* Right Side: Confirmation Code & Delete */}
-              <div className="flex items-center justify-between md:justify-end gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-sand-200 dark:border-[#28342F]">
+              <div className="flex items-center justify-between md:justify-end gap-5 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-slate-800">
                 <div className="text-left md:text-right">
-                  <span className="text-[10px] uppercase font-bold text-sand-400 block tracking-wider">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 block tracking-wider">
                     Confirmation No.
                   </span>
-                  <span className="font-mono text-xs font-black text-sand-900 dark:text-[#F4F7F5] bg-sand-100 dark:bg-[#18221F] px-2 py-0.5 rounded border border-sand-300 dark:border-[#28342F]">
+                  <span className="font-mono text-xs font-bold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
                     {res.confirmationNumber}
                   </span>
                   {res.cost > 0 && (
-                    <p className="text-xs font-bold text-sand-700 dark:text-sand-300 mt-1">
+                    <p className="text-xs font-extrabold text-slate-900 dark:text-slate-100 mt-1">
                       {formatCurrency(res.cost)}
                     </p>
                   )}
@@ -271,7 +268,7 @@ export const ReservationsPage: React.FC = () => {
 
                 <button
                   onClick={() => setDeletingId(res.id)}
-                  className="p-2 rounded-xl text-sand-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
                   title="Remove reservation"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -299,13 +296,13 @@ export const ReservationsPage: React.FC = () => {
         maxWidth="lg"
       >
         <form onSubmit={handleAddReservation} className="space-y-4 pt-2">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Booking Type</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Booking Type</label>
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value as Reservation['type'])}
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500"
               >
                 <option value="flight">Flight</option>
                 <option value="hotel">Hotel / Ryokan</option>
@@ -316,108 +313,108 @@ export const ReservationsPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Provider / Airline</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Provider / Airline</label>
               <input
                 type="text"
                 required
                 value={provider}
                 onChange={(e) => setProvider(e.target.value)}
                 placeholder="e.g. Japan Airlines, Hotel Gracery"
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Booking Title</label>
+            <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Booking Title</label>
             <input
               type="text"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Roundtrip SFO to Narita Tokyo"
-              className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Date</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Date</label>
               <input
                 type="date"
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Time / Check-in</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Time / Check-in</label>
               <input
                 type="text"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 placeholder="e.g. 11:45 AM or 3:00 PM"
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Confirmation Code</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Confirmation Code</label>
               <input
                 type="text"
                 value={confirmationNumber}
                 onChange={(e) => setConfirmationNumber(e.target.value)}
                 placeholder="e.g. JL-8849201"
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none font-mono"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none font-mono"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Cost ($ USD)</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Cost ($ USD)</label>
               <input
                 type="number"
                 min="0"
                 value={cost}
                 onChange={(e) => setCost(Number(e.target.value))}
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Location / Address</label>
+            <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Location / Address</label>
             <input
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="e.g. Shinjuku Kabukicho, Tokyo"
-              className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Notes / Instructions</label>
+            <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Notes / Instructions</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               placeholder="e.g. Baggage allowance, breakfast included, terminal details..."
-              className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] p-3 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 p-3 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-sand-200 dark:border-[#28342F]">
-            <Button variant="outline" type="button" onClick={() => setShowAddModal(false)}>
+          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <Button variant="outline" type="button" onClick={() => setShowAddModal(false)} className="rounded-xl">
               Cancel
             </Button>
             <Button
               variant="primary"
               type="submit"
-              className="bg-brand-600 hover:bg-brand-700 dark:bg-brand-500 dark:text-sand-950 font-bold"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl"
             >
               Save Reservation
             </Button>

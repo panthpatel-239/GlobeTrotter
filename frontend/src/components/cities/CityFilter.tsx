@@ -44,10 +44,10 @@ export const CityFilter: React.FC<CityFilterProps> = ({
   const handleTag = onTagChange || onTagFilterChange;
 
   return (
-    <div className="bg-white dark:bg-[#1C1C1E] p-4 sm:p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card space-y-3.5">
+    <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
       {/* Large Search Input */}
       <div className="relative w-full">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#8E8E93] dark:text-[#98989D]">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
           <Search className="h-4 w-4" />
         </div>
         <input
@@ -55,13 +55,13 @@ export const CityFilter: React.FC<CityFilterProps> = ({
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Where do you want to go? (e.g. Tokyo, Paris, Bali, Kyoto...)"
-          className="w-full rounded-xl border border-black/[0.08] dark:border-white/[0.10] bg-black/[0.02] dark:bg-white/[0.04] pl-10 pr-4 py-2.5 text-xs sm:text-sm text-[#1D1D1F] dark:text-[#F5F5F7] placeholder:text-[#8E8E93] transition-all focus:border-[#007AFF] focus:outline-none focus:ring-1 focus:ring-[#007AFF]"
+          className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 transition-all focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-2xs"
         />
       </div>
 
       {/* Filter Tag Chips */}
       {handleTag && (
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 border-t border-slate-100 dark:border-slate-800">
           {TAG_OPTIONS.map((tag) => {
             const Icon = tag.icon;
             const isSelected = tagFilter === tag.id;
@@ -69,10 +69,10 @@ export const CityFilter: React.FC<CityFilterProps> = ({
               <button
                 key={tag.id}
                 onClick={() => handleTag(tag.id)}
-                className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                   isSelected
-                    ? 'bg-[#007AFF] dark:bg-[#0A84FF] text-white shadow-xs'
-                    : 'bg-black/[0.03] dark:bg-white/[0.04] text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.06] dark:hover:bg-white/[0.08] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                    ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200/70 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -84,19 +84,19 @@ export const CityFilter: React.FC<CityFilterProps> = ({
       )}
 
       {/* Secondary Filters: Region & Cost Index */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-black/[0.06] dark:border-white/[0.08] text-xs">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 text-xs">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             Region:
           </span>
           {['all', 'Asia', 'Europe', 'Africa'].map((r) => (
             <button
               key={r}
               onClick={() => onRegionChange(r)}
-              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                 activeRegion === r
-                  ? 'bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF] font-semibold'
-                  : 'text-[#6E6E73] dark:text-[#98989D] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                  ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 border border-blue-100 dark:border-blue-900/40'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
               {r === 'all' ? 'All Regions' : r}
@@ -104,8 +104,8 @@ export const CityFilter: React.FC<CityFilterProps> = ({
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             Budget Tier:
           </span>
           {[
@@ -117,10 +117,10 @@ export const CityFilter: React.FC<CityFilterProps> = ({
             <button
               key={tier.id}
               onClick={() => onCostIndexChange(tier.id)}
-              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                 activeCost === tier.id
-                  ? 'bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF] font-semibold'
-                  : 'text-[#6E6E73] dark:text-[#98989D] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                  ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 border border-blue-100 dark:border-blue-900/40'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
               {tier.label}

@@ -26,9 +26,17 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor: handle 401 unauthorized & generic errors
+// Response interceptor: auto-unwrap backend { success: true, data: ... } format & handle 401
 apiClient.interceptors.response.use(
   (response) => {
+    if (
+      response.data &&
+      typeof response.data === 'object' &&
+      'success' in response.data &&
+      'data' in response.data
+    ) {
+      response.data = response.data.data;
+    }
     return response;
   },
   (error: AxiosError) => {

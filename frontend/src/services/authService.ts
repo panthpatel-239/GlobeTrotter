@@ -6,18 +6,22 @@ import { mockHandlers, getStoredUser, saveStoredUser } from './mockStorage';
 export const authService = {
   async register(data: SignupFormData): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>('/auth/register', {
+      const response = await apiClient.post<any>('/auth/register', {
         name: data.name,
         email: data.email,
         password: data.password,
       });
-      if (response.data?.token) {
-        setAuthToken(response.data.token);
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(response.data.user));
+      const authData = response.data?.token ? response.data : response.data?.data || response.data;
+      if (authData?.token) {
+        setAuthToken(authData.token);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(authData.user));
       }
-      return response.data;
-    } catch (error) {
-      // Offline fallback
+      return authData;
+    } catch (error: any) {
+      if (error.response && error.response.status >= 400 && error.response.status < 500) {
+        throw error;
+      }
+      // Offline fallback only on network failure
       console.warn('Backend unavailable, using dynamic fallback for registration:', error);
       const user: User = {
         id: `user-${Date.now()}`,
@@ -38,14 +42,18 @@ export const authService = {
 
   async login(data: LoginFormData): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>('/auth/login', data);
-      if (response.data?.token) {
-        setAuthToken(response.data.token);
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(response.data.user));
+      const response = await apiClient.post<any>('/auth/login', data);
+      const authData = response.data?.token ? response.data : response.data?.data || response.data;
+      if (authData?.token) {
+        setAuthToken(authData.token);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(authData.user));
       }
-      return response.data;
-    } catch (error) {
-      // Offline fallback
+      return authData;
+    } catch (error: any) {
+      if (error.response && error.response.status >= 400 && error.response.status < 500) {
+        throw error;
+      }
+      // Offline fallback only on network failure
       console.warn('Backend unavailable, using dynamic fallback for login:', error);
       const user = getStoredUser();
       user.email = data.email;
@@ -59,9 +67,10 @@ export const authService = {
 
   async getCurrentUser(): Promise<User> {
     try {
-      const response = await apiClient.get<User>('/auth/me');
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(response.data));
-      return response.data;
+      const response = await apiClient.get<any>('/auth/me');
+      const userData = response.data?.id ? response.data : response.data?.data || response.data;
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+      return userData;
     } catch (error) {
       // Offline fallback
       const cached = localStorage.getItem(USER_STORAGE_KEY);

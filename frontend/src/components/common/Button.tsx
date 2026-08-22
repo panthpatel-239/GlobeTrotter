@@ -21,27 +21,27 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer';
+    'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer';
 
   const sizeStyles = {
-    sm: 'px-2.5 py-1 text-xs gap-1.5',
-    md: 'px-3.5 py-1.5 text-xs sm:text-sm gap-2',
-    lg: 'px-5 py-2.5 text-sm gap-2',
+    sm: 'px-3 py-1.5 text-xs gap-1.5',
+    md: 'px-4 py-2 text-xs sm:text-sm gap-2',
+    lg: 'px-5 py-2.5 text-sm sm:text-base gap-2.5',
   };
 
   const variantStyles = {
     primary:
-      'bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] dark:hover:bg-[#409CFF] text-white shadow-xs',
+      'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm shadow-blue-500/25 hover:shadow-md hover:shadow-blue-500/30',
     secondary:
-      'bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-[#1D1D1F] hover:bg-black/80 dark:hover:bg-white/90',
+      'bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 shadow-sm',
     outline:
-      'border border-black/[0.08] dark:border-white/[0.10] bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]',
+      'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-2xs',
     danger:
-      'bg-[#FF3B30] hover:bg-[#D70015] dark:bg-[#FF453A] dark:hover:bg-[#FF6961] text-white shadow-xs',
+      'bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-sm shadow-rose-500/25',
     ghost:
-      'text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]',
+      'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100',
     glass:
-      'bg-white/80 dark:bg-[#2C2C2E]/80 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.10] text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-white dark:hover:bg-[#2C2C2E]',
+      'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-slate-100 hover:bg-white dark:hover:bg-slate-800 shadow-2xs',
   };
 
   return (

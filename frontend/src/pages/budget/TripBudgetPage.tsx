@@ -112,28 +112,28 @@ export const TripBudgetPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header & Trip Selector */}
-      <div className="bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1.5">
             <Link
               to={`/trips/${selectedTrip.id}`}
-              className="text-xs font-medium text-[#007AFF] dark:text-[#0A84FF] hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
             >
-              <ArrowLeft className="w-3 h-3" />
+              <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Trip Workspace</span>
             </Link>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight flex items-center gap-2">
-            <Wallet className="w-6 h-6 text-[#007AFF] dark:text-[#0A84FF]" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+            <Wallet className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             <span>Budget & Financial Health</span>
           </h1>
-          <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Financial analytics, expense ledger, and spending forecasts for{' '}
-            <strong className="text-[#1D1D1F] dark:text-[#F5F5F7]">{selectedTrip.title}</strong>.
+            <strong className="text-slate-900 dark:text-slate-100 font-semibold">{selectedTrip.title}</strong>.
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2.5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           {/* Trip Selector */}
           <select
             value={selectedTrip.id}
@@ -144,10 +144,10 @@ export const TripBudgetPage: React.FC = () => {
                 expenseService.getExpenses(chosen.id).then((exp) => setExpenses(exp || []));
               }
             }}
-            className="rounded-lg border border-black/[0.08] dark:border-white/[0.10] bg-black/[0.02] dark:bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] focus:outline-none"
+            className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs font-semibold text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 shadow-2xs cursor-pointer"
           >
             {allTrips.map((t) => (
-              <option key={t.id} value={t.id}>
+              <option key={t.id} value={t.id} className="bg-white dark:bg-slate-900">
                 {t.title} (Budget: {formatCurrency(t.budget)})
               </option>
             ))}
@@ -158,7 +158,7 @@ export const TripBudgetPage: React.FC = () => {
             size="sm"
             leftIcon={<Plus className="w-3.5 h-3.5" />}
             onClick={() => setShowAddExpenseModal(true)}
-            className="bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white font-medium text-xs shadow-xs"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-2xs rounded-xl px-4 py-2"
           >
             Log Expense
           </Button>
@@ -174,36 +174,36 @@ export const TripBudgetPage: React.FC = () => {
       />
 
       {/* Burn Rate & Daily Allowance Metrics Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+          <div className="p-3 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 border border-blue-100 dark:border-blue-900/40 flex-shrink-0">
             <TrendingUp className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block">
               Avg. Daily Burn Rate
             </span>
-            <div className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <div className="text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
               {formatCurrency(dailyBurnRate)} / day
             </div>
-            <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D]">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
               Calculated across {totalDays} total expedition days
             </p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-emerald-500/10 text-[#34C759] dark:text-[#30D158]">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+          <div className="p-3 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40 flex-shrink-0">
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block">
               Recommended Daily Limit
             </span>
-            <div className="text-lg font-bold text-[#34C759] dark:text-[#30D158]">
+            <div className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">
               {formatCurrency(recommendedDailyAllowance)} / day
             </div>
-            <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D]">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
               Target daily pace for remaining {formatCurrency(Math.max(0, remainingBudget))}
             </p>
           </div>

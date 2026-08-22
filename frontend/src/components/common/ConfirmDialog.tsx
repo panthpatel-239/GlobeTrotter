@@ -30,18 +30,18 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="sm">
       <div className="text-center pt-2 pb-2">
         <div
-          className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full mb-3 ${
+          className={`mx-auto flex h-12 w-12 items-center justify-center rounded-2xl mb-3.5 ${
             variant === 'danger'
-              ? 'bg-red-500/10 text-[#FF3B30] dark:text-[#FF453A]'
-              : 'bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF]'
+              ? 'bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400 border border-rose-100 dark:border-rose-900/40'
+              : 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 border border-blue-100 dark:border-blue-900/40'
           }`}
         >
           <AlertTriangle className="h-6 w-6" />
         </div>
-        <h3 className="text-base font-bold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">{title}</h3>
-        <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mb-5 leading-relaxed">{message}</p>
-        <div className="flex items-center justify-center gap-2">
-          <Button variant="outline" size="sm" onClick={onClose} disabled={isLoading} className="text-xs">
+        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-1.5">{title}</h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">{message}</p>
+        <div className="flex items-center justify-center gap-3">
+          <Button variant="outline" size="sm" onClick={onClose} disabled={isLoading} className="text-xs px-4 py-2">
             {cancelText}
           </Button>
           <Button
@@ -49,7 +49,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             size="sm"
             onClick={onConfirm}
             isLoading={isLoading}
-            className="text-xs"
+            className="text-xs px-4 py-2"
           >
             {confirmText}
           </Button>

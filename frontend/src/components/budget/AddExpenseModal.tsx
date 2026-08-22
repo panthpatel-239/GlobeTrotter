@@ -66,7 +66,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
       description="Record a flight, hotel, meal, tour, or other cost."
       maxWidth="md"
     >
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-3 pt-1">
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-3.5 pt-1">
         <Input
           label="Expense Title *"
           placeholder="e.g. Flight to Tokyo, Sushi Omakase"
@@ -75,7 +75,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           {...register('title')}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <Select
             label="Category *"
             options={categoryOptions}
@@ -91,7 +91,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <Input
             label="Amount *"
             type="number"
@@ -112,19 +112,19 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">
+          <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
             Notes / Receipt info
           </label>
           <textarea
             rows={2}
             placeholder="e.g. Paid in cash, split with Marcus"
-            className="w-full rounded-lg border border-black/[0.08] dark:border-white/[0.10] bg-black/[0.02] dark:bg-white/[0.04] p-2.5 text-xs text-[#1D1D1F] dark:text-[#F5F5F7] placeholder:text-[#8E8E93] focus:outline-none focus:border-[#007AFF]"
+            className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 p-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             {...register('notes')}
           />
         </div>
 
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <Button type="button" size="sm" variant="outline" onClick={onClose}>
+        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <Button type="button" size="sm" variant="outline" onClick={onClose} className="rounded-xl">
             Cancel
           </Button>
           <Button
@@ -132,7 +132,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
             size="sm"
             variant="primary"
             isLoading={isLoading}
-            className="bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-4 py-2"
           >
             Save Expense
           </Button>

@@ -128,7 +128,7 @@ export const AddToTripModal: React.FC<AddToTripModalProps> = ({
         {trips.length > 0 ? (
           <>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 Select Target Trip *
               </label>
               <select
@@ -142,7 +142,7 @@ export const AddToTripModal: React.FC<AddToTripModalProps> = ({
                     setSelectedStopId('');
                   }
                 }}
-                className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:outline-none"
               >
                 {trips.map((trip) => (
                   <option key={trip.id} value={trip.id}>
@@ -157,13 +157,13 @@ export const AddToTripModal: React.FC<AddToTripModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {selectedTrip?.stops && selectedTrip.stops.length > 0 ? (
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                       Destination Stop
                     </label>
                     <select
                       value={selectedStopId}
                       onChange={(e) => setSelectedStopId(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none"
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:outline-none"
                     >
                       {selectedTrip.stops.map((stop) => (
                         <option key={stop.id} value={stop.id}>
@@ -174,23 +174,23 @@ export const AddToTripModal: React.FC<AddToTripModalProps> = ({
                   </div>
                 ) : (
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                       Destination Stop
                     </label>
-                    <div className="text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+                    <div className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 p-2.5 rounded-xl border border-amber-200 dark:border-amber-900/40">
                       A new stop will be automatically created for this activity.
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                     Schedule for Day
                   </label>
                   <select
                     value={dayNumber}
                     onChange={(e) => setDayNumber(Number(e.target.value))}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none"
+                    className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:outline-none"
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((d) => (
                       <option key={d} value={d}>
@@ -202,18 +202,18 @@ export const AddToTripModal: React.FC<AddToTripModalProps> = ({
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-              <Button type="button" variant="outline" onClick={onClose}>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <Button type="button" variant="outline" onClick={onClose} className="rounded-xl">
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" isLoading={isSubmitting}>
+              <Button type="submit" variant="primary" isLoading={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl">
                 Confirm & Add
               </Button>
             </div>
           </>
         ) : (
           <div className="text-center py-6">
-            <p className="text-sm text-slate-600 mb-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               You don't have any active trips yet. Create a trip first!
             </p>
             <Button
@@ -223,6 +223,7 @@ export const AddToTripModal: React.FC<AddToTripModalProps> = ({
                 onClose();
                 window.location.href = '/trips/create';
               }}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl"
             >
               Create a Trip
             </Button>

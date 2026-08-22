@@ -91,11 +91,11 @@ export const TripsListPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight flex items-center gap-2">
-            <Compass className="w-6 h-6 text-[#007AFF] dark:text-[#0A84FF]" />
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+            <Compass className="w-7 h-7 text-blue-600 dark:text-blue-400" />
             <span>My Travel Journeys</span>
           </h1>
-          <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Organize, customize, and review all your planned and past trips.
           </p>
         </div>
@@ -104,7 +104,7 @@ export const TripsListPage: React.FC = () => {
           variant="primary"
           leftIcon={<Plus className="w-4 h-4" />}
           onClick={() => navigate('/trips/create')}
-          className="bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white text-xs font-medium shadow-xs"
+          className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm shadow-blue-500/25 px-4 py-2 rounded-xl"
         >
           Plan New Journey
         </Button>
@@ -122,13 +122,13 @@ export const TripsListPage: React.FC = () => {
 
       {/* Trips Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3].map((i) => (
             <Skeleton key={i} height={260} className="rounded-2xl" />
           ))}
         </div>
       ) : filteredTrips.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredTrips.map((trip) => (
             <TripCard
               key={trip.id}

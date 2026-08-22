@@ -116,7 +116,7 @@ export const DashboardPage: React.FC = () => {
   const spentBudget = (currentTrip?.expenses || []).reduce((sum, e) => sum + e.amount, 0) || 1840;
   const targetBudget = currentTrip?.budget || 2500;
   const remainingBudget = Math.max(0, targetBudget - spentBudget);
-  const remainingDays = 12;
+  const remainingDays = 6;
 
   // Overview Statistics
   const upcomingTripsCount = trips.filter((t) => t.status === 'planned').length;
@@ -207,100 +207,106 @@ export const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       {/* Editorial Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
             Good morning, {user?.name?.split(' ')[0] || 'Alex'}
           </h1>
-          <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#98989D] mt-0.5">
-            Your next journey begins in <strong className="text-[#007AFF] dark:text-[#0A84FF]">6 days</strong>.
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Your next journey begins in <strong className="text-blue-600 dark:text-blue-400 font-semibold">{remainingDays} days</strong>. Explore your itinerary and milestones below.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <Button
             variant="primary"
             leftIcon={<Plus className="w-4 h-4" />}
             onClick={() => navigate('/trips/create')}
-            className="bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white font-medium shadow-xs text-xs"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm shadow-blue-500/25 px-4 py-2 text-xs rounded-xl"
           >
             Plan New Journey
           </Button>
         </div>
       </div>
 
-      {/* Section A: Next Trip / Milestone Spotlight & Section B: NEXT UP Activity */}
+      {/* Hero / Active Trip Card & NEXT UP Actionable Milestone Widget */}
       {currentTrip && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Active Journey Card */}
-          <div className="lg:col-span-2 relative overflow-hidden rounded-2xl bg-[#1C1C1E] text-white min-h-[260px] flex flex-col justify-between p-5 sm:p-6 border border-black/[0.08] dark:border-white/[0.10] shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          {/* Active Expedition Hero Card */}
+          <div className="lg:col-span-2 relative overflow-hidden rounded-2xl bg-slate-950 text-white min-h-[300px] flex flex-col justify-between p-6 sm:p-7 border border-slate-800 shadow-md">
             <img
               src={
                 currentTrip.coverImage ||
                 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1600&q=80'
               }
               alt={currentTrip.title}
-              className="absolute inset-0 w-full h-full object-cover opacity-35"
+              className="absolute inset-0 w-full h-full object-cover opacity-40 scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E] via-[#1C1C1E]/60 to-transparent" />
+            {/* Deep rich contrast gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-900/35" />
 
+            {/* Top Badges */}
             <div className="relative z-10 flex items-start justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-md bg-[#0A84FF]/20 border border-[#0A84FF]/40 text-[#64D2FF] text-[10px] font-semibold uppercase tracking-wider backdrop-blur-md">
+              <div className="flex items-center gap-2.5">
+                <span className="px-3 py-1 rounded-lg bg-blue-600/30 border border-blue-400/40 text-blue-200 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md shadow-2xs">
                   Active Expedition
                 </span>
-                <span className="text-xs text-[#98989D] flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
+                <span className="text-xs text-slate-300 flex items-center gap-1.5 bg-slate-900/60 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <Clock className="w-3.5 h-3.5 text-blue-400" />
                   <span>Departs in 6 days</span>
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-[#98989D] bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-md">
+              <div className="flex items-center gap-1.5 text-xs text-slate-200 bg-slate-900/70 border border-white/10 px-3 py-1 rounded-lg backdrop-blur-md">
                 <CloudSun className="w-3.5 h-3.5 text-amber-400" />
                 <span>Tokyo 19°C Clear</span>
               </div>
             </div>
 
-            <div className="relative z-10 space-y-2.5 pt-4">
+            {/* Middle and Bottom Content */}
+            <div className="relative z-10 space-y-3.5 pt-6">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF9F0A]">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-amber-400 block drop-shadow-xs">
                   {currentTrip.destinationSummary || 'Tokyo → Kyoto → Osaka'}
                 </span>
-                <h2 className="text-xl sm:text-3xl font-bold tracking-tight text-white mt-0.5">
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mt-1 drop-shadow-sm">
                   {currentTrip.title}
                 </h2>
-                <p className="text-xs text-[#aeaeb2] font-normal">
-                  {formatDateRange(currentTrip.startDate, currentTrip.endDate)} • {calculateDaysBetween(currentTrip.startDate, currentTrip.endDate)} Days
+                <p className="text-xs sm:text-sm text-slate-300 font-medium flex items-center gap-2 mt-1">
+                  <Calendar className="w-3.5 h-3.5 text-blue-400" />
+                  <span>{formatDateRange(currentTrip.startDate, currentTrip.endDate)}</span>
+                  <span>•</span>
+                  <span>{calculateDaysBetween(currentTrip.startDate, currentTrip.endDate)} Days Traveling</span>
                 </p>
               </div>
 
-              {/* Progress & Budget Allocation */}
-              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/10">
+              {/* Progress & Budget Allocation Bars */}
+              <div className="grid grid-cols-2 gap-4 pt-3 border-t border-white/15">
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-medium text-[#aeaeb2] mb-1">
-                    <span>Itinerary Progress</span>
-                    <span>{tripProgress}% Ready</span>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                    <span>Itinerary Readiness</span>
+                    <span className="text-blue-400 font-bold">{tripProgress}% Ready</span>
                   </div>
-                  <div className="w-full bg-white/20 rounded-full h-1 overflow-hidden">
+                  <div className="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-white/10">
                     <div
-                      className="bg-[#0A84FF] h-1 rounded-full transition-all duration-300"
+                      className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
                       style={{ width: `${tripProgress}%` }}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-medium text-[#aeaeb2] mb-1">
-                    <span>Budget Utilized</span>
-                    <span>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                    <span>Budget Allocation</span>
+                    <span className="text-emerald-400 font-bold">
                       {formatCurrency(spentBudget)} / {formatCurrency(targetBudget)}
                     </span>
                   </div>
-                  <div className="w-full bg-white/20 rounded-full h-1 overflow-hidden">
+                  <div className="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-white/10">
                     <div
-                      className="bg-[#30D158] h-1 rounded-full transition-all duration-300"
+                      className="bg-emerald-500 h-1.5 rounded-full transition-all duration-500"
                       style={{
                         width: `${Math.min(100, (spentBudget / targetBudget) * 100)}%`,
                       }}
@@ -309,60 +315,66 @@ export const DashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-1 flex items-center gap-2">
+              {/* Action Buttons */}
+              <div className="pt-2 flex items-center gap-3">
                 <Button
                   size="sm"
                   variant="primary"
                   rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
                   onClick={() => navigate(`/trips/${currentTrip.id}/itinerary`)}
-                  className="bg-[#0A84FF] hover:bg-[#409CFF] text-white font-medium text-xs"
+                  className="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl px-4 py-2 shadow-sm shadow-blue-500/25 cursor-pointer"
                 >
                   Open Itinerary
                 </Button>
                 <Link
                   to={`/trips/${currentTrip.id}`}
-                  className="text-xs font-medium text-[#aeaeb2] hover:text-white px-2 py-1"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-200 hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 px-3.5 py-2 rounded-xl backdrop-blur-md transition-colors"
                 >
-                  Workspace Hub
+                  <span>Workspace Hub</span>
                 </Link>
               </div>
             </div>
           </div>
 
           {/* NEXT UP Actionable Milestone Widget */}
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-black/[0.08] dark:border-white/[0.10] shadow-card flex flex-col justify-between space-y-3">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
             <div>
-              <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06] dark:border-white/[0.08]">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF9F0A]">
-                  NEXT UP
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-amber-500" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                    NEXT UP
+                  </span>
+                </div>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                  Tomorrow
                 </span>
-                <span className="text-xs font-medium text-[#8E8E93] dark:text-[#98989D]">Tomorrow</span>
               </div>
 
-              <div className="mt-3 space-y-1.5">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
-                    {nextActivity?.startTime || '07:00'}
+              <div className="mt-4 space-y-2">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
+                    {nextActivity?.startTime || '08:30'}
                   </span>
-                  <span className="text-xs text-[#8E8E93] dark:text-[#98989D]">
-                    • 2h duration
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    • 2h scheduled
                   </span>
                 </div>
 
-                <h3 className="text-sm sm:text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] leading-snug">
+                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 leading-snug">
                   {nextActivity?.name || 'Sunrise Tour at Amber Fort'}
                 </h3>
 
-                <p className="text-xs text-[#6E6E73] dark:text-[#98989D] flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" />
-                  <span>{nextActivity?.location || 'Tokyo, Japan'}</span>
+                <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 pt-0.5">
+                  <MapPin className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                  <span className="truncate">{nextActivity?.location || 'Tokyo, Japan'}</span>
                 </p>
 
                 <div className="pt-2 flex items-center gap-2 text-xs">
-                  <span className="px-2 py-0.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] text-[#6E6E73] dark:text-[#98989D] font-medium">
+                  <span className="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 font-semibold border border-blue-100 dark:border-blue-900/40">
                     {nextActivity?.category || 'Sightseeing'}
                   </span>
-                  <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                  <span className="font-bold text-slate-900 dark:text-slate-100">
                     {nextActivity?.cost ? formatCurrency(nextActivity.cost) : '$35 estimated'}
                   </span>
                 </div>
@@ -373,7 +385,7 @@ export const DashboardPage: React.FC = () => {
               size="sm"
               variant="outline"
               onClick={() => navigate(`/trips/${currentTrip.id}/itinerary`)}
-              className="w-full justify-center font-medium text-xs"
+              className="w-full justify-center font-semibold text-xs border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl py-2"
             >
               Open Daily Itinerary
             </Button>
@@ -381,59 +393,63 @@ export const DashboardPage: React.FC = () => {
         </div>
       )}
 
-      {/* Section C: Travel Overview (Meaningful statistics) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF] flex-shrink-0">
+      {/* Section C: Travel Overview Statistics Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Card 1: Upcoming Trips */}
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-4">
+          <div className="p-3 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 flex-shrink-0 border border-blue-100 dark:border-blue-900/40">
             <Compass className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D] block">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block">
               Upcoming Trips
             </span>
-            <span className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <span className="text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
               {upcomingTripsCount} {upcomingTripsCount === 1 ? 'Expedition' : 'Expeditions'}
             </span>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex-shrink-0">
+        {/* Card 2: Destinations */}
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-4">
+          <div className="p-3 rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950/60 dark:text-teal-400 flex-shrink-0 border border-teal-100 dark:border-teal-900/40">
             <MapPin className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D] block">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block">
               Destinations
             </span>
-            <span className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <span className="text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
               {totalDestinationsCount} Cities Mapped
             </span>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-emerald-500/10 text-[#34C759] dark:text-[#30D158] flex-shrink-0">
+        {/* Card 3: Days Traveling */}
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-4">
+          <div className="p-3 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400 flex-shrink-0 border border-indigo-100 dark:border-indigo-900/40">
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D] block">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block">
               Days Traveling
             </span>
-            <span className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <span className="text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
               {totalTravelDays} Days Scheduled
             </span>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-amber-500/10 text-[#FF9F0A] flex-shrink-0">
+        {/* Card 4: Planned Spend */}
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-4">
+          <div className="p-3 rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400 flex-shrink-0 border border-amber-100 dark:border-amber-900/40">
             <DollarSign className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D] block">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block">
               Planned Spend
             </span>
-            <span className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <span className="text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
               {formatCurrency(totalPlannedSpend)}
             </span>
           </div>
@@ -441,44 +457,44 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* Section D & E: Smart Alerts & Upcoming Timeline */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Smart Alerts */}
-        <div className="lg:col-span-1 bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
+        <div className="lg:col-span-1 bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div className="flex items-center justify-between pb-1">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               Trip Preparation Alerts
             </h3>
-            <span className="px-1.5 py-0.2 rounded-full bg-black/[0.06] dark:bg-white/[0.10] text-[10px] font-bold text-[#6E6E73] dark:text-[#98989D]">
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-600 dark:text-slate-300">
               {alerts.length} active
             </span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {alerts.length > 0 ? (
               alerts.map((alert) => (
                 <div
                   key={alert.id}
-                  className={`p-3 rounded-xl border text-xs transition-colors ${
+                  className={`p-3.5 rounded-xl border text-xs transition-colors ${
                     alert.type === 'warning'
-                      ? 'bg-amber-500/5 border-amber-500/20 text-[#1D1D1F] dark:text-[#F5F5F7]'
-                      : 'bg-blue-500/5 border-blue-500/20 text-[#1D1D1F] dark:text-[#F5F5F7]'
+                      ? 'bg-amber-50/70 border-amber-200 text-amber-900 dark:bg-amber-950/30 dark:border-amber-800/60 dark:text-amber-200'
+                      : 'bg-blue-50/70 border-blue-200 text-blue-900 dark:bg-blue-950/30 dark:border-blue-800/60 dark:text-blue-200'
                   }`}
                 >
-                  <div className="flex items-start gap-2">
+                  <div className="flex items-start gap-2.5">
                     {alert.type === 'warning' ? (
-                      <AlertTriangle className="w-4 h-4 text-[#FF9F0A] flex-shrink-0 mt-0.5" />
+                      <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                     ) : (
-                      <AlertCircle className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF] flex-shrink-0 mt-0.5" />
+                      <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                     )}
                     <div className="space-y-1 min-w-0 flex-1">
-                      <div className="font-semibold text-xs">{alert.title}</div>
-                      <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D] leading-relaxed">
+                      <div className="font-bold text-xs">{alert.title}</div>
+                      <p className="text-[11px] leading-relaxed opacity-90">
                         {alert.message}
                       </p>
                       {alert.actionPath && (
                         <Link
                           to={alert.actionPath}
-                          className="inline-block text-[11px] font-medium text-[#007AFF] dark:text-[#0A84FF] hover:underline pt-0.5"
+                          className="inline-block text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline pt-1"
                         >
                           {alert.actionText || 'Review'} →
                         </Link>
@@ -488,7 +504,7 @@ export const DashboardPage: React.FC = () => {
                 </div>
               ))
             ) : (
-              <div className="py-6 text-center text-xs text-[#8E8E93]">
+              <div className="py-8 text-center text-xs text-slate-400">
                 No pending alerts. All travel checklists & documents in order!
               </div>
             )}
@@ -496,47 +512,47 @@ export const DashboardPage: React.FC = () => {
         </div>
 
         {/* Upcoming Timeline Events */}
-        <div className="lg:col-span-2 bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div className="flex items-center justify-between pb-1">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               Upcoming Travel Timeline
             </h3>
             <Link
               to="/calendar"
-              className="text-xs font-medium text-[#007AFF] dark:text-[#0A84FF] hover:underline flex items-center gap-0.5"
+              className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
             >
               <span>Full Calendar</span>
-              <ChevronRight className="w-3 h-3" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {timelineEvents.map((evt) => {
               const Icon = evt.icon;
               return (
                 <div
                   key={evt.id}
-                  className="p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06] flex items-center justify-between gap-3"
+                  className="p-3.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-slate-200 dark:hover:border-slate-700 transition-colors"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="p-2 rounded-lg bg-black/[0.04] dark:bg-white/[0.06] text-[#007AFF] dark:text-[#0A84FF] flex-shrink-0">
+                    <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 flex-shrink-0 border border-blue-100 dark:border-blue-900/30">
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="truncate">
-                      <h4 className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] truncate">
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
                         {evt.title}
                       </h4>
-                      <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D] truncate">
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                         {evt.subtitle}
                       </p>
                     </div>
                   </div>
 
                   <div className="text-right flex-shrink-0">
-                    <span className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] block">
+                    <span className="text-xs font-bold text-slate-900 dark:text-slate-100 block">
                       {evt.time}
                     </span>
-                    <span className="text-[10px] text-[#8E8E93] dark:text-[#98989D]">
+                    <span className="text-[10px] font-medium text-slate-400">
                       {evt.date}
                     </span>
                   </div>
@@ -547,21 +563,21 @@ export const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Section B continued: Active Journeys Grid */}
-      <section className="space-y-3">
+      {/* Your Journeys Grid */}
+      <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight flex items-center gap-2">
-              <Compass className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF]" />
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
+              <Compass className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <span>YOUR JOURNEYS</span>
             </h2>
-            <p className="text-xs text-[#8E8E93] dark:text-[#98989D]">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Active, planned, and completed multi-destination expeditions
             </p>
           </div>
           <Link
             to="/trips"
-            className="text-xs font-medium text-[#007AFF] dark:text-[#0A84FF] hover:underline flex items-center gap-0.5"
+            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
           >
             <span>View All ({trips.length})</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -569,13 +585,13 @@ export const DashboardPage: React.FC = () => {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[1, 2, 3].map((i) => (
               <Skeleton key={i} height={260} className="rounded-2xl" />
             ))}
           </div>
         ) : trips.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {trips.map((trip) => (
               <TripCard
                 key={trip.id}
@@ -597,20 +613,20 @@ export const DashboardPage: React.FC = () => {
       </section>
 
       {/* DISCOVER: Recommendations */}
-      <section className="space-y-3 pt-1">
+      <section className="space-y-4 pt-2">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF]" />
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <span>CURATED DESTINATIONS</span>
             </h2>
-            <p className="text-xs text-[#8E8E93] dark:text-[#98989D]">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Recommendations based on your {user?.travelStyle || 'Cultural & Adventure'} style
             </p>
           </div>
           <Link
             to="/explore/cities"
-            className="text-xs font-medium text-[#007AFF] dark:text-[#0A84FF] hover:underline flex items-center gap-0.5"
+            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
           >
             <span>Explore All</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -618,13 +634,13 @@ export const DashboardPage: React.FC = () => {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[1, 2, 3, 4].map((i) => (
               <Skeleton key={i} height={260} className="rounded-2xl" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {popularCities.map((city) => (
               <CityCard
                 key={city.id}

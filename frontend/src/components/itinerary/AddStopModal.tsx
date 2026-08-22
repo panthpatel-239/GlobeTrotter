@@ -63,7 +63,7 @@ export const AddStopModal: React.FC<AddStopModalProps> = ({
     >
       {/* Quick suggestions */}
       <div className="mb-4">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
           Popular Suggestions:
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -72,7 +72,7 @@ export const AddStopModal: React.FC<AddStopModalProps> = ({
               key={c.id}
               type="button"
               onClick={() => handleCitySuggestion(c)}
-              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-700 text-xs font-medium transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 hover:text-blue-600 dark:hover:text-blue-400 text-slate-700 dark:text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
             >
               {c.name}, {c.country}
             </button>
@@ -118,22 +118,22 @@ export const AddStopModal: React.FC<AddStopModalProps> = ({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
             Accommodation & Transit Notes
           </label>
           <textarea
             rows={2}
             placeholder="e.g. Hotel booked in Gion district. Shinkansen reservation #412"
-            className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:border-brand-500 focus:ring-brand-500/20"
+            className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 p-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:border-blue-500 focus:ring-blue-500/20"
             {...register('notes')}
           />
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-          <Button type="button" variant="outline" onClick={onClose}>
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <Button type="button" variant="outline" onClick={onClose} className="rounded-xl">
             Cancel
           </Button>
-          <Button type="submit" variant="primary" isLoading={isLoading}>
+          <Button type="submit" variant="primary" isLoading={isLoading} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl">
             Add Destination Stop
           </Button>
         </div>

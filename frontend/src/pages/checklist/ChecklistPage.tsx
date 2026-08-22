@@ -111,14 +111,11 @@ export const ChecklistPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 text-xs font-bold uppercase tracking-wider mb-2">
-            <CheckSquare className="w-3.5 h-3.5" />
-            <span>Trip Preparation</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-sand-900 dark:text-[#F4F7F5] tracking-tight">
-            Travel & Packing Checklist
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+            <CheckSquare className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            <span>Travel & Packing Checklist</span>
           </h1>
-          <p className="text-sm text-sand-600 dark:text-[#A7B3AD] mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Stay organized with pre-departure passport validations, eSIM data packs, currency exchanges, and packing essentials.
           </p>
         </div>
@@ -127,36 +124,36 @@ export const ChecklistPage: React.FC = () => {
           variant="primary"
           leftIcon={<Plus className="w-4 h-4" />}
           onClick={() => setShowAddModal(true)}
-          className="bg-brand-600 hover:bg-brand-700 dark:bg-brand-500 dark:text-sand-950 font-bold"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl px-4 py-2 shadow-2xs"
         >
           Add Checklist Item
         </Button>
       </div>
 
       {/* Progress Metric Card */}
-      <div className="bg-white dark:bg-[#121A18] p-5 rounded-3xl border border-sand-300 dark:border-[#28342F] shadow-card space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-sand-900 dark:text-[#F4F7F5]">
+      <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+        <div className="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400">
+          <span className="font-bold text-slate-900 dark:text-slate-100">
             Checklist Readiness: {completedCount} of {totalCount} Completed
           </span>
-          <span className="text-xs font-black text-brand-600 dark:text-brand-400">{progressPercent}%</span>
+          <span className="text-blue-600 dark:text-blue-400 font-bold">{progressPercent}% Ready</span>
         </div>
-        <div className="w-full bg-sand-200 dark:bg-[#18221F] rounded-full h-2 overflow-hidden">
+        <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
           <div
-            className="bg-brand-600 dark:bg-brand-500 h-2 rounded-full transition-all duration-500"
+            className="bg-emerald-500 h-2 rounded-full transition-all duration-500"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
 
       {/* Filter Category Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
         <button
           onClick={() => setSelectedCategory('all')}
-          className={`px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap ${
+          className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all cursor-pointer whitespace-nowrap ${
             selectedCategory === 'all'
-              ? 'bg-sand-900 dark:bg-brand-500 text-white dark:text-sand-950 shadow-2xs'
-              : 'bg-white dark:bg-[#121A18] border border-sand-300 dark:border-[#28342F] text-sand-600 dark:text-[#A7B3AD] hover:text-sand-900 dark:hover:text-white'
+              ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
+              : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
           }`}
         >
           All Items ({items.length})
@@ -167,10 +164,10 @@ export const ChecklistPage: React.FC = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 selectedCategory === cat
-                  ? 'bg-sand-900 dark:bg-brand-500 text-white dark:text-sand-950 shadow-2xs'
-                  : 'bg-white dark:bg-[#121A18] border border-sand-300 dark:border-[#28342F] text-sand-600 dark:text-[#A7B3AD] hover:text-sand-900 dark:hover:text-white'
+                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
+                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {cat} ({catCount})
@@ -187,15 +184,15 @@ export const ChecklistPage: React.FC = () => {
           ))}
         </div>
       ) : filteredItems.length > 0 ? (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {filteredItems.map((item) => (
             <div
               key={item.id}
               onClick={() => handleToggle(item.id)}
-              className={`p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 cursor-pointer select-none ${
+              className={`p-4 rounded-xl border transition-all flex items-center justify-between gap-3.5 cursor-pointer select-none shadow-2xs ${
                 item.isCompleted
-                  ? 'bg-emerald-50/50 dark:bg-[#14231B] border-emerald-200 dark:border-emerald-900/60 text-sand-400 dark:text-[#A7B3AD]'
-                  : 'bg-white dark:bg-[#121A18] border-sand-300 dark:border-[#28342F] shadow-card hover:bg-sand-50 dark:hover:bg-[#18221F] text-sand-900 dark:text-[#F4F7F5]'
+                  ? 'bg-emerald-50/40 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/40 text-slate-400 dark:text-slate-500'
+                  : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-slate-100'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
@@ -208,20 +205,20 @@ export const ChecklistPage: React.FC = () => {
                   }}
                 >
                   {item.isCompleted ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 fill-emerald-100 dark:fill-emerald-950" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 fill-emerald-50 dark:fill-emerald-950" />
                   ) : (
-                    <Circle className="w-5 h-5 text-sand-400 hover:text-brand-600 dark:hover:text-brand-400" />
+                    <Circle className="w-5 h-5 text-slate-300 dark:text-slate-600 hover:text-blue-600 dark:hover:text-blue-400" />
                   )}
                 </button>
                 <div className="truncate">
                   <span
                     className={`text-xs sm:text-sm font-semibold truncate block ${
-                      item.isCompleted ? 'line-through text-sand-400 dark:text-[#66736B]' : 'text-sand-900 dark:text-[#F4F7F5]'
+                      item.isCompleted ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-slate-100'
                     }`}
                   >
                     {item.title}
                   </span>
-                  <span className="text-[10px] text-sand-500 dark:text-[#A7B3AD] font-medium">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
                     {item.category} {item.dueDate && `• Target Date: ${item.dueDate}`}
                   </span>
                 </div>
@@ -232,7 +229,7 @@ export const ChecklistPage: React.FC = () => {
                   e.stopPropagation();
                   handleDeleteItem(item.id);
                 }}
-                className="p-1.5 text-sand-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer"
                 title="Delete task"
               >
                 <Trash2 className="w-4 h-4" />
@@ -260,24 +257,24 @@ export const ChecklistPage: React.FC = () => {
       >
         <form onSubmit={handleAddItem} className="space-y-4 pt-2">
           <div>
-            <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Task Title</label>
+            <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Task Title</label>
             <input
               type="text"
               required
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               placeholder="e.g. Order Japan Rail Pass voucher, Pack GaN charger"
-              className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Category</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Category</label>
               <select
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value as ChecklistItem['category'])}
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>
@@ -288,24 +285,24 @@ export const ChecklistPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-sand-700 dark:text-[#A7B3AD] mb-1">Target Date</label>
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">Target Date</label>
               <input
                 type="date"
                 value={newDueDate}
                 onChange={(e) => setNewDueDate(e.target.value)}
-                className="w-full rounded-xl border border-sand-300 dark:border-[#28342F] bg-sand-100 dark:bg-[#18221F] px-3 py-2 text-xs text-sand-900 dark:text-[#F4F7F5] focus:outline-none focus:border-brand-500"
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-sand-200 dark:border-[#28342F]">
-            <Button variant="outline" type="button" onClick={() => setShowAddModal(false)}>
+          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <Button variant="outline" type="button" onClick={() => setShowAddModal(false)} className="rounded-xl">
               Cancel
             </Button>
             <Button
               variant="primary"
               type="submit"
-              className="bg-brand-600 hover:bg-brand-700 dark:bg-brand-500 dark:text-sand-950 font-bold"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl"
             >
               Add Item
             </Button>

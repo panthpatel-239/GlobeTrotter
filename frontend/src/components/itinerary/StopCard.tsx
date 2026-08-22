@@ -44,26 +44,26 @@ export const StopCard: React.FC<StopCardProps> = ({
 
   return (
     <>
-      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-soft overflow-hidden mb-6 transition-all duration-300">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden mb-6 transition-all duration-300">
         {/* Stop Header Banner */}
-        <div className="relative p-6 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="relative p-5 sm:p-6 bg-slate-950 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 text-white font-extrabold text-lg shadow-lg shadow-brand-500/30 flex-shrink-0">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white font-extrabold text-base shadow-sm shadow-blue-500/25 flex-shrink-0">
               #{stopIndex + 1}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-black tracking-tight text-white">{stop.cityName}</h3>
-                <span className="text-xs text-slate-300 font-medium px-2 py-0.5 rounded-full bg-white/10 border border-white/10">
+                <h3 className="text-xl font-extrabold tracking-tight text-white">{stop.cityName}</h3>
+                <span className="text-xs text-slate-300 font-semibold px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/10">
                   {stop.country}
                 </span>
               </div>
-              <div className="flex items-center gap-4 text-xs text-slate-300 mt-1">
+              <div className="flex items-center gap-3 text-xs text-slate-300 mt-1 font-medium">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-brand-400" />
+                  <Calendar className="w-3.5 h-3.5 text-blue-400" />
                   {formatDateRange(stop.arrivalDate, stop.departureDate)}
                 </span>
-                <span className="font-semibold text-brand-300">
+                <span className="font-bold text-teal-400">
                   ({durationDays} {durationDays === 1 ? 'Day' : 'Days'})
                 </span>
               </div>
@@ -76,16 +76,16 @@ export const StopCard: React.FC<StopCardProps> = ({
               <>
                 <Button
                   size="sm"
-                  variant="glass"
-                  leftIcon={<Plus className="w-4 h-4" />}
+                  variant="outline"
+                  leftIcon={<Plus className="w-3.5 h-3.5" />}
                   onClick={() => onAddActivity(stop.id, 1)}
-                  className="text-white hover:text-slate-900"
+                  className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-slate-900 text-xs font-semibold rounded-xl"
                 >
                   Add Activity
                 </Button>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-white/10 transition-colors"
+                  className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-white/10 transition-colors cursor-pointer"
                   title="Remove Stop"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -94,7 +94,7 @@ export const StopCard: React.FC<StopCardProps> = ({
             )}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               title={isExpanded ? 'Collapse' : 'Expand'}
             >
               {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -104,15 +104,15 @@ export const StopCard: React.FC<StopCardProps> = ({
 
         {/* Stop notes banner if any */}
         {stop.notes && (
-          <div className="px-6 py-3 bg-amber-50/70 border-b border-amber-100 text-xs text-amber-900 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-600 flex-shrink-0" />
+          <div className="px-6 py-3 bg-amber-50/70 dark:bg-amber-950/30 border-b border-amber-200/60 dark:border-amber-900/40 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
             <span><strong className="font-semibold">Notes:</strong> {stop.notes}</span>
           </div>
         )}
 
         {/* Days & Activities List */}
         {isExpanded && (
-          <div className="p-6 space-y-6">
+          <div className="p-5 sm:p-6 space-y-6">
             {Object.keys(dayBuckets).map((dayKey) => {
               const dayNum = Number(dayKey);
               const dayActivities = dayBuckets[dayNum];
@@ -120,12 +120,12 @@ export const StopCard: React.FC<StopCardProps> = ({
               return (
                 <div key={dayNum} className="space-y-3">
                   {/* Day Header */}
-                  <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
                     <div className="flex items-center gap-2.5">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-brand-100 text-brand-800 text-xs font-black">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 text-xs font-extrabold border border-blue-100 dark:border-blue-900/40">
                         D{dayNum}
                       </span>
-                      <h4 className="text-sm font-bold text-slate-800">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                         Day {dayNum} in {stop.cityName}
                       </h4>
                       <span className="text-xs text-slate-400 font-medium">
@@ -136,7 +136,7 @@ export const StopCard: React.FC<StopCardProps> = ({
                     {!readOnly && (
                       <button
                         onClick={() => onAddActivity(stop.id, dayNum)}
-                        className="text-xs text-brand-600 hover:text-brand-700 font-bold flex items-center gap-1 hover:underline"
+                        className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-bold flex items-center gap-1 hover:underline cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span>Add to Day {dayNum}</span>
@@ -158,12 +158,12 @@ export const StopCard: React.FC<StopCardProps> = ({
                       ))}
                     </div>
                   ) : (
-                    <div className="py-4 px-4 rounded-2xl bg-slate-50 border border-dashed border-slate-200 text-center">
-                      <p className="text-xs text-slate-500">No activities scheduled for Day {dayNum}.</p>
+                    <div className="py-4 px-4 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-dashed border-slate-200 dark:border-slate-700 text-center">
+                      <p className="text-xs text-slate-500 dark:text-slate-400">No activities scheduled for Day {dayNum}.</p>
                       {!readOnly && (
                         <button
                           onClick={() => onAddActivity(stop.id, dayNum)}
-                          className="mt-1.5 text-xs text-brand-600 font-semibold hover:underline"
+                          className="mt-1.5 text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer"
                         >
                           + Add first activity
                         </button>

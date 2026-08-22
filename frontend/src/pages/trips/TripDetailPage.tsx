@@ -258,29 +258,29 @@ export const TripDetailPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Trip Hero Workspace Header */}
-      <div className="relative rounded-2xl overflow-hidden shadow-sm border border-black/[0.08] dark:border-white/[0.10] bg-[#1C1C1E] text-white min-h-[300px] flex flex-col justify-end p-5 sm:p-8">
+      <div className="relative rounded-2xl overflow-hidden shadow-sm border border-slate-800 bg-slate-950 text-white min-h-[300px] flex flex-col justify-end p-6 sm:p-8">
         <img
           src={
             trip.coverImage ||
             'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1600&q=80'
           }
           alt={trip.title}
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 scale-105 transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E] via-[#1C1C1E]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-900/30" />
 
         {/* Top actions toolbar */}
         <div className="relative z-10 flex items-center justify-between mb-auto pb-6 flex-wrap gap-2.5">
           <div className="flex items-center gap-2">
             <TripStatusBadge status={trip.status} />
-            <span className="bg-black/30 backdrop-blur-md px-2.5 py-0.5 rounded-md text-xs font-semibold text-white border border-white/10">
+            <span className="bg-slate-900/60 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-semibold text-white border border-white/10">
               {durationDays} Days Expedition
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             {/* Collaborators Avatar Stack */}
-            <div className="flex items-center -space-x-1.5 mr-1">
+            <div className="flex items-center -space-x-2 mr-1">
               {members.map((m) => (
                 <img
                   key={m.id}
@@ -289,7 +289,7 @@ export const TripDetailPage: React.FC = () => {
                     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'
                   }
                   alt={m.name}
-                  className="w-6 h-6 rounded-full border-2 border-[#1C1C1E] object-cover"
+                  className="w-7 h-7 rounded-full border-2 border-slate-900 object-cover shadow-2xs"
                   title={`${m.name} (${m.role})`}
                 />
               ))}
@@ -300,7 +300,7 @@ export const TripDetailPage: React.FC = () => {
               variant="outline"
               leftIcon={<UserPlus className="w-3.5 h-3.5" />}
               onClick={() => setShowInviteModal(true)}
-              className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-[#1D1D1F] text-xs font-medium"
+              className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-slate-900 text-xs font-semibold rounded-xl"
             >
               Invite
             </Button>
@@ -309,7 +309,7 @@ export const TripDetailPage: React.FC = () => {
               variant="outline"
               leftIcon={<Share2 className="w-3.5 h-3.5" />}
               onClick={handleShareClick}
-              className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-[#1D1D1F] text-xs font-medium"
+              className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-slate-900 text-xs font-semibold rounded-xl"
             >
               Share
             </Button>
@@ -318,13 +318,13 @@ export const TripDetailPage: React.FC = () => {
               variant="outline"
               leftIcon={<Edit className="w-3.5 h-3.5" />}
               onClick={() => navigate(`/trips/${trip.id}/edit`)}
-              className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-[#1D1D1F] text-xs font-medium"
+              className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-slate-900 text-xs font-semibold rounded-xl"
             >
               Edit
             </Button>
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="p-1.5 rounded-lg bg-white/10 backdrop-blur-md text-white hover:bg-red-600 transition-colors cursor-pointer"
+              className="p-2 rounded-xl bg-white/10 backdrop-blur-md text-white hover:bg-rose-600 transition-colors cursor-pointer border border-white/15"
               title="Delete Trip"
             >
               <Trash2 className="w-4 h-4" />
@@ -333,28 +333,28 @@ export const TripDetailPage: React.FC = () => {
         </div>
 
         {/* Bottom Title & Details */}
-        <div className="relative z-10 max-w-3xl space-y-1.5">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF9F0A]">
+        <div className="relative z-10 max-w-3xl space-y-2">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-amber-400 block drop-shadow-xs">
             {trip.destinationSummary || 'Multi-City Expedition'}
           </span>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white">{trip.title}</h1>
+          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-sm">{trip.title}</h1>
           {trip.description && (
-            <p className="text-xs sm:text-sm text-[#aeaeb2] leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
               {trip.description}
             </p>
           )}
 
-          <div className="flex items-center gap-4 pt-2 text-xs text-[#aeaeb2] flex-wrap">
-            <span className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#0A84FF]" />
+          <div className="flex items-center gap-4 pt-2 text-xs text-slate-300 flex-wrap">
+            <span className="flex items-center gap-1.5 font-medium">
+              <Calendar className="w-3.5 h-3.5 text-blue-400" />
               {formatDateRange(trip.startDate, trip.endDate)}
             </span>
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-[#0A84FF]" />
+            <span className="flex items-center gap-1.5 font-medium">
+              <MapPin className="w-3.5 h-3.5 text-teal-400" />
               {totalStops} {totalStops === 1 ? 'Destination Stop' : 'Destination Stops'}
             </span>
-            <span className="flex items-center gap-1.5 font-semibold text-white">
-              <DollarSign className="w-3.5 h-3.5 text-[#0A84FF]" />
+            <span className="flex items-center gap-1.5 font-bold text-white">
+              <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
               Budget: {formatCurrency(trip.budget)}
             </span>
           </div>
@@ -362,15 +362,15 @@ export const TripDetailPage: React.FC = () => {
           {/* Activity Progress */}
           {totalActivities > 0 && (
             <div className="pt-2 max-w-md">
-              <div className="flex items-center justify-between text-xs text-[#aeaeb2] font-medium mb-1">
-                <span>Itinerary Progress</span>
-                <span>
-                  {completedActivities}/{totalActivities} Activities Completed ({progressPercent}%)
+              <div className="flex items-center justify-between text-xs text-slate-300 font-semibold mb-1.5">
+                <span>Itinerary Readiness</span>
+                <span className="text-blue-400">
+                  {completedActivities}/{totalActivities} Activities ({progressPercent}%)
                 </span>
               </div>
-              <div className="w-full bg-white/20 rounded-full h-1 overflow-hidden">
+              <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden border border-white/10">
                 <div
-                  className="bg-[#0A84FF] h-1 rounded-full transition-all duration-300"
+                  className="bg-blue-500 h-1.5 rounded-full transition-all duration-300"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -380,64 +380,64 @@ export const TripDetailPage: React.FC = () => {
       </div>
 
       {/* Sticky Workspace Navigation Tabs */}
-      <div className="sticky top-14 z-20 bg-white/80 dark:bg-[#1C1C1E]/80 backdrop-blur-xl p-1.5 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-xs flex items-center justify-between flex-wrap gap-1.5 transition-colors">
-        <div className="flex items-center gap-1 flex-wrap">
+      <div className="sticky top-16 z-20 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between flex-wrap gap-2 transition-colors">
+        <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === 'overview'
-                ? 'bg-[#007AFF] text-white dark:bg-[#0A84FF]'
-                : 'text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
-            <Layers className="w-3.5 h-3.5" />
+            <Layers className="w-4 h-4" />
             <span>Overview & Hubs</span>
           </button>
           <button
             onClick={() => setActiveTab('itinerary')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === 'itinerary'
-                ? 'bg-[#007AFF] text-white dark:bg-[#0A84FF]'
-                : 'text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
-            <Route className="w-3.5 h-3.5" />
+            <Route className="w-4 h-4" />
             <span>Itinerary Timeline ({totalActivities})</span>
           </button>
           <button
             onClick={() => setActiveTab('map')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === 'map'
-                ? 'bg-[#007AFF] text-white dark:bg-[#0A84FF]'
-                : 'text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
-            <MapIcon className="w-3.5 h-3.5" />
+            <MapIcon className="w-4 h-4" />
             <span>Map View</span>
           </button>
           <button
             onClick={() => navigate(`/trips/${trip.id}/budget`)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 transition-colors cursor-pointer"
           >
-            <PieChart className="w-3.5 h-3.5 text-[#34C759] dark:text-[#30D158]" />
+            <PieChart className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Budget</span>
           </button>
           <button
             onClick={() => navigate(`/trips/${trip.id}/calendar`)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 transition-colors cursor-pointer"
           >
-            <CalendarDays className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" />
+            <CalendarDays className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span>Calendar</span>
           </button>
           <button
             onClick={() => setActiveTab('travelers')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === 'travelers'
-                ? 'bg-[#007AFF] text-white dark:bg-[#0A84FF]'
-                : 'text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
-            <Users className="w-3.5 h-3.5" />
+            <Users className="w-4 h-4" />
             <span>Travelers ({members.length})</span>
           </button>
         </div>
@@ -446,9 +446,9 @@ export const TripDetailPage: React.FC = () => {
           <Button
             size="sm"
             variant="primary"
-            leftIcon={<Plus className="w-3.5 h-3.5" />}
+            leftIcon={<Plus className="w-4 h-4" />}
             onClick={() => setShowAddStopModal(true)}
-            className="bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white font-medium text-xs shadow-xs"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm shadow-blue-500/25 rounded-xl px-4 py-2"
           >
             Add Stop
           </Button>
@@ -457,25 +457,25 @@ export const TripDetailPage: React.FC = () => {
 
       {/* TAB 1: Overview & Hubs */}
       {activeTab === 'overview' && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Quick Hub Action Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link
               to={`/trips/${trip.id}/itinerary`}
-              className="group bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card hover:border-[#007AFF]/40 dark:hover:border-[#0A84FF]/40 transition-all flex flex-col justify-between"
+              className="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-blue-500/40 dark:hover:border-blue-400/40 hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF] mb-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 mb-3 border border-blue-100 dark:border-blue-900/40">
                   <Route className="h-5 w-5" />
                 </div>
-                <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                   Itinerary Builder
                 </h3>
-                <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   {totalStops} destination hubs & {totalActivities} scheduled experiences.
                 </p>
               </div>
-              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#007AFF] dark:text-[#0A84FF]">
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400">
                 <span>Open Builder</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
@@ -483,20 +483,20 @@ export const TripDetailPage: React.FC = () => {
 
             <Link
               to={`/trips/${trip.id}/budget`}
-              className="group bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card hover:border-[#34C759]/40 transition-all flex flex-col justify-between"
+              className="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-emerald-500/40 hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-[#34C759] dark:text-[#30D158] mb-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 mb-3 border border-emerald-100 dark:border-emerald-900/40">
                   <PieChart className="h-5 w-5" />
                 </div>
-                <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                   Budget Analytics
                 </h3>
-                <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Tracked {formatCurrency(totalExpenses)} of {formatCurrency(trip.budget)} budget.
                 </p>
               </div>
-              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#34C759] dark:text-[#30D158]">
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                 <span>View Budget Ledger</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
@@ -504,20 +504,20 @@ export const TripDetailPage: React.FC = () => {
 
             <Link
               to={`/trips/${trip.id}/calendar`}
-              className="group bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.10] shadow-card hover:border-[#007AFF]/40 transition-all flex flex-col justify-between"
+              className="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-blue-500/40 hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF] mb-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400 mb-3 border border-indigo-100 dark:border-indigo-900/40">
                   <CalendarDays className="h-5 w-5" />
                 </div>
-                <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                   Calendar Agenda
                 </h3>
-                <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Unified flights, hotel check-ins, and activity schedules.
                 </p>
               </div>
-              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#007AFF] dark:text-[#0A84FF]">
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400">
                 <span>Open Calendar</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
@@ -525,13 +525,13 @@ export const TripDetailPage: React.FC = () => {
           </div>
 
           {/* Destination Stops List */}
-          <section className="bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card space-y-4">
+          <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                   Expedition Route & Destination Stops
                 </h3>
-                <p className="text-xs text-[#6E6E73] dark:text-[#98989D]">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Cities and regions mapped out on this journey
                 </p>
               </div>
@@ -540,49 +540,49 @@ export const TripDetailPage: React.FC = () => {
                 variant="outline"
                 leftIcon={<Plus className="w-3.5 h-3.5" />}
                 onClick={() => setShowAddStopModal(true)}
-                className="text-xs"
+                className="text-xs font-semibold rounded-xl"
               >
                 Add Stop
               </Button>
             </div>
 
             {trip.stops && trip.stops.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {trip.stops.map((stop, idx) => (
                   <div
                     key={stop.id}
-                    className="p-3.5 rounded-xl border border-black/[0.06] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] flex items-center gap-3 hover:bg-black/[0.04] dark:hover:bg-white/[0.05] transition-all"
+                    className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex items-center gap-3.5 hover:bg-white dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-2xs"
                   >
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#007AFF] dark:bg-[#0A84FF] text-white font-bold text-xs flex-shrink-0">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white font-bold text-xs flex-shrink-0 shadow-2xs">
                       {idx + 1}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h4 className="text-xs font-bold text-[#1D1D1F] dark:text-[#F5F5F7] truncate">
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
                         {stop.cityName}
                       </h4>
-                      <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D] truncate">{stop.country}</p>
-                      <p className="text-[10px] text-[#007AFF] dark:text-[#0A84FF] font-semibold mt-0.5">
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{stop.country}</p>
+                      <p className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold mt-0.5">
                         {formatDateRange(stop.arrivalDate, stop.departureDate)}
                       </p>
                     </div>
                     <button
                       onClick={() => handleOpenAddActivity(stop.id, 1)}
-                      className="p-1 rounded-md bg-white dark:bg-[#2C2C2E] border border-black/[0.08] dark:border-white/[0.10] text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#007AFF] cursor-pointer"
+                      className="p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:text-blue-600 transition-colors cursor-pointer"
                       title="Add Activity to Stop"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-6 border border-dashed border-black/[0.10] dark:border-white/[0.12] rounded-xl">
-                <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mb-2">No stops added yet.</p>
+              <div className="text-center py-8 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">No stops added yet.</p>
                 <Button
                   size="sm"
                   variant="primary"
                   onClick={() => setShowAddStopModal(true)}
-                  className="bg-[#007AFF] dark:bg-[#0A84FF] text-white text-xs"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl"
                 >
                   Add First Stop
                 </Button>
@@ -609,25 +609,25 @@ export const TripDetailPage: React.FC = () => {
                 />
               ))}
 
-              <div className="text-center py-2">
+              <div className="text-center py-3">
                 <Button
                   variant="outline"
                   size="sm"
                   leftIcon={<Plus className="w-3.5 h-3.5" />}
                   onClick={() => setShowAddStopModal(true)}
-                  className="text-xs"
+                  className="text-xs font-semibold rounded-xl"
                 >
                   Add Another Destination Stop
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="bg-white dark:bg-[#1C1C1E] p-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] text-center space-y-3">
-              <Compass className="w-10 h-10 text-[#8E8E93] mx-auto" />
-              <h3 className="text-base font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <div className="bg-white dark:bg-slate-900 p-10 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-center space-y-3 shadow-sm">
+              <Compass className="w-10 h-10 text-slate-400 mx-auto" />
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                 Your Timeline is Empty
               </h3>
-              <p className="text-xs text-[#6E6E73] dark:text-[#98989D] max-w-sm mx-auto">
+              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
                 Add destination stops and schedule activities to build your day-by-day timeline.
               </p>
               <Button
@@ -635,7 +635,7 @@ export const TripDetailPage: React.FC = () => {
                 size="sm"
                 leftIcon={<Plus className="w-3.5 h-3.5" />}
                 onClick={() => setShowAddStopModal(true)}
-                className="bg-[#007AFF] dark:bg-[#0A84FF] text-white text-xs"
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl"
               >
                 Add First Stop
               </Button>
@@ -652,13 +652,13 @@ export const TripDetailPage: React.FC = () => {
       {/* TAB 4: Collaboration & Travelers */}
       {activeTab === 'travelers' && (
         <div className="space-y-4">
-          <div className="bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card space-y-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                   Trip Members & Collaboration
                 </h3>
-                <p className="text-xs text-[#6E6E73] dark:text-[#98989D]">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Invite travel companions to co-plan and edit this expedition.
                 </p>
               </div>
@@ -667,17 +667,17 @@ export const TripDetailPage: React.FC = () => {
                 variant="primary"
                 leftIcon={<UserPlus className="w-3.5 h-3.5" />}
                 onClick={() => setShowInviteModal(true)}
-                className="bg-[#007AFF] dark:bg-[#0A84FF] text-white font-medium text-xs shadow-xs"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-2xs"
               >
                 Invite Traveler
               </Button>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {members.map((member) => (
                 <div
                   key={member.id}
-                  className="p-3.5 rounded-xl border border-black/[0.06] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] flex items-center justify-between"
+                  className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
                     <img
@@ -686,22 +686,22 @@ export const TripDetailPage: React.FC = () => {
                         'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
                       }
                       alt={member.name}
-                      className="w-8 h-8 rounded-full object-cover border border-black/[0.08] dark:border-white/[0.10]"
+                      className="w-9 h-9 rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-2xs"
                     />
                     <div>
-                      <h4 className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100">
                         {member.name}
                       </h4>
-                      <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D]">{member.email}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">{member.email}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold capitalize bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF]">
+                    <span className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold capitalize bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-100 dark:border-blue-900/40">
                       {member.role}
                     </span>
                     {member.status === 'invited' && (
-                      <span className="text-[10px] text-[#FF9F0A] font-semibold bg-amber-500/10 px-2 py-0.5 rounded-md">
+                      <span className="text-[10px] text-amber-700 dark:text-amber-300 font-semibold bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-900/40 px-2 py-0.5 rounded-md">
                         Pending
                       </span>
                     )}
@@ -745,9 +745,9 @@ export const TripDetailPage: React.FC = () => {
         description="Add a friend or co-planner to this travel expedition."
         maxWidth="md"
       >
-        <form onSubmit={handleInviteMember} className="space-y-3 pt-2">
+        <form onSubmit={handleInviteMember} className="space-y-3.5 pt-2">
           <div>
-            <label className="block text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">
+            <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
               Companion Name
             </label>
             <input
@@ -756,12 +756,12 @@ export const TripDetailPage: React.FC = () => {
               value={inviteName}
               onChange={(e) => setInviteName(e.target.value)}
               placeholder="e.g. Elena Rostova"
-              className="w-full rounded-lg border border-black/[0.08] dark:border-white/[0.10] bg-black/[0.02] dark:bg-white/[0.04] px-3 py-2 text-xs text-[#1D1D1F] dark:text-[#F5F5F7] focus:outline-none focus:border-[#007AFF]"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">
+            <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
               Email Address
             </label>
             <input
@@ -770,25 +770,25 @@ export const TripDetailPage: React.FC = () => {
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
               placeholder="elena@travel.org"
-              className="w-full rounded-lg border border-black/[0.08] dark:border-white/[0.10] bg-black/[0.02] dark:bg-white/[0.04] px-3 py-2 text-xs text-[#1D1D1F] dark:text-[#F5F5F7] focus:outline-none focus:border-[#007AFF]"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">
+            <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
               Access Role
             </label>
             <select
               value={inviteRole}
               onChange={(e) => setInviteRole(e.target.value as any)}
-              className="w-full rounded-lg border border-black/[0.08] dark:border-white/[0.10] bg-black/[0.02] dark:bg-white/[0.04] px-3 py-2 text-xs text-[#1D1D1F] dark:text-[#F5F5F7] focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500"
             >
               <option value="editor">Editor (Can add/modify stops and activities)</option>
               <option value="viewer">Viewer (Read-only itinerary view)</option>
             </select>
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
             <Button variant="outline" size="sm" type="button" onClick={() => setShowInviteModal(false)}>
               Cancel
             </Button>
@@ -796,7 +796,7 @@ export const TripDetailPage: React.FC = () => {
               variant="primary"
               size="sm"
               type="submit"
-              className="bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white font-medium"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl"
             >
               Send Invite
             </Button>
@@ -812,20 +812,20 @@ export const TripDetailPage: React.FC = () => {
         description="Anyone with this link can view this complete travel itinerary without needing an account."
         maxWidth="md"
       >
-        <div className="space-y-3 pt-2">
-          <div className="flex items-center gap-2 p-2.5 bg-black/[0.02] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.10] rounded-lg">
+        <div className="space-y-3.5 pt-2">
+          <div className="flex items-center gap-2 p-3 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl">
             <input
               type="text"
               readOnly
               value={shareLink}
-              className="w-full bg-transparent text-xs text-[#1D1D1F] dark:text-[#F5F5F7] focus:outline-none select-all font-mono"
+              className="w-full bg-transparent text-xs text-slate-900 dark:text-slate-100 focus:outline-none select-all font-mono"
             />
             <Button
               size="sm"
               variant={isCopied ? 'secondary' : 'primary'}
               leftIcon={isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               onClick={handleCopyShareLink}
-              className={isCopied ? '' : 'bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white'}
+              className={isCopied ? '' : 'bg-blue-600 hover:bg-blue-700 text-white'}
             >
               {isCopied ? 'Copied' : 'Copy'}
             </Button>
@@ -836,7 +836,7 @@ export const TripDetailPage: React.FC = () => {
               href={shareLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-[#007AFF] dark:text-[#0A84FF] font-semibold hover:underline flex items-center gap-1"
+              className="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline flex items-center gap-1"
             >
               <span>Preview Public Guide</span>
               <ExternalLink className="w-3.5 h-3.5" />

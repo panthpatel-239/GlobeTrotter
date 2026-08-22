@@ -49,25 +49,25 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
       <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
         <div
-          className={`relative transform overflow-hidden rounded-2xl bg-white dark:bg-[#1C1C1E] text-left shadow-2xl transition-all w-full my-8 border border-black/[0.08] dark:border-white/[0.10] ${maxWidthClasses[maxWidth]}`}
+          className={`relative transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 text-left shadow-2xl transition-all w-full my-8 border border-slate-200 dark:border-slate-800 ${maxWidthClasses[maxWidth]}`}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           {(title || description) && (
-            <div className="border-b border-black/[0.06] dark:border-white/[0.08] px-5 py-3.5 flex items-center justify-between">
+            <div className="border-b border-slate-100 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
               <div>
-                {title && <h3 className="text-sm sm:text-base font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">{title}</h3>}
-                {description && <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mt-0.5">{description}</p>}
+                {title && <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">{title}</h3>}
+                {description && <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>}
               </div>
               <button
                 onClick={onClose}
-                className="rounded-lg p-1 text-[#8E8E93] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors cursor-pointer"
+                className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -75,7 +75,7 @@ export const Modal: React.FC<ModalProps> = ({
           )}
 
           {/* Body */}
-          <div className="px-5 py-4">{children}</div>
+          <div className="px-6 py-5">{children}</div>
         </div>
       </div>
     </div>

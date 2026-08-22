@@ -92,10 +92,11 @@ export const ExploreCitiesPage: React.FC = () => {
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
-            Global Destinations
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+            <Globe className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            <span>Global Destinations</span>
           </h1>
-          <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Discover trending cities, cultural hubs, daily costs, and curated itineraries worldwide.
           </p>
         </div>
@@ -114,22 +115,22 @@ export const ExploreCitiesPage: React.FC = () => {
       />
 
       {/* Results Count & Tags */}
-      <div className="flex items-center justify-between text-xs text-[#8E8E93] dark:text-[#98989D] px-1">
+      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
         <span>
-          Showing <strong className="text-[#1D1D1F] dark:text-[#F5F5F7]">{cities.length}</strong>{' '}
+          Showing <strong className="text-slate-900 dark:text-slate-100 font-semibold">{cities.length}</strong>{' '}
           {cities.length === 1 ? 'destination' : 'destinations'}
         </span>
       </div>
 
       {/* Cities Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <Skeleton key={i} height={280} className="rounded-2xl" />
           ))}
         </div>
       ) : cities.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {cities.map((city) => (
             <CityCard
               key={city.id}

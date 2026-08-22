@@ -66,16 +66,16 @@ export const EditTripPage: React.FC = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight flex items-center gap-2">
-          <Compass className="w-6 h-6 text-[#007AFF] dark:text-[#0A84FF]" />
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+          <Compass className="w-7 h-7 text-blue-600 dark:text-blue-400" />
           <span>Edit Journey Details</span>
         </h1>
-        <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
           Update trip title, dates, budget targets, or cover image.
         </p>
       </div>
 
-      <div className="bg-white dark:bg-[#1C1C1E] p-6 sm:p-8 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card">
+      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
         <TripForm
           initialData={trip}
           onSubmit={handleSubmit}

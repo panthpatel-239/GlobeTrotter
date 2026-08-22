@@ -54,9 +54,9 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
 
   return (
     <>
-      <div className="group relative bg-white dark:bg-[#1C1C1E] rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card hover:border-[#007AFF]/40 dark:hover:border-[#0A84FF]/40 transition-all duration-200 overflow-hidden flex flex-col justify-between">
+      <div className="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-blue-500/40 dark:hover:border-blue-400/40 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between">
         {/* Top Cover Image */}
-        <div className="relative h-44 w-full overflow-hidden bg-black/[0.04] dark:bg-white/[0.04]">
+        <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
           <img
             src={
               trip.coverImage ||
@@ -65,7 +65,7 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
             alt={trip.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-slate-950/20" />
 
           {/* Status Badge */}
           <div className="absolute top-3 left-3">
@@ -80,15 +80,15 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
                   e.stopPropagation();
                   setShowMenu(!showMenu);
                 }}
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-black/60 backdrop-blur-md text-white hover:bg-black transition-colors cursor-pointer"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md text-white hover:bg-slate-900 transition-colors cursor-pointer border border-white/10"
                 aria-label="Trip options"
               >
-                <MoreVertical className="h-3.5 w-3.5" />
+                <MoreVertical className="h-4 w-4" />
               </button>
 
               {showMenu && (
                 <div
-                  className="absolute right-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-[#2C2C2E] p-1 shadow-xl border border-black/[0.08] dark:border-white/[0.10] z-30"
+                  className="absolute right-0 mt-1.5 w-44 rounded-2xl bg-white dark:bg-slate-800 p-1.5 shadow-xl border border-slate-200 dark:border-slate-700 z-30"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
@@ -96,9 +96,9 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
                       setShowMenu(false);
                       navigate(`/trips/${trip.id}`);
                     }}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-colors text-left cursor-pointer"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors text-left cursor-pointer"
                   >
-                    <Route className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" />
+                    <Route className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span>Open Hub</span>
                   </button>
 
@@ -107,9 +107,9 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
                       setShowMenu(false);
                       navigate(`/trips/${trip.id}/edit`);
                     }}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-colors text-left cursor-pointer"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors text-left cursor-pointer"
                   >
-                    <Edit2 className="w-3.5 h-3.5 text-[#8E8E93]" />
+                    <Edit2 className="w-4 h-4 text-slate-400" />
                     <span>Edit Trip</span>
                   </button>
 
@@ -119,9 +119,9 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
                         setShowMenu(false);
                         onShare(trip);
                       }}
-                      className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-colors text-left cursor-pointer"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors text-left cursor-pointer"
                     >
-                      <Share2 className="w-3.5 h-3.5 text-[#8E8E93]" />
+                      <Share2 className="w-4 h-4 text-slate-400" />
                       <span>Share Plan</span>
                     </button>
                   )}
@@ -132,9 +132,9 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
                         setShowMenu(false);
                         setShowDeleteConfirm(true);
                       }}
-                      className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-medium text-[#FF3B30] dark:text-[#FF453A] hover:bg-red-500/10 rounded-lg transition-colors text-left cursor-pointer"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-xl transition-colors text-left cursor-pointer"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                       <span>Delete Trip</span>
                     </button>
                   )}
@@ -145,29 +145,29 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
 
           {/* Bottom Title overlay */}
           <div className="absolute bottom-3 left-3 right-3 text-white">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF9F0A] block drop-shadow-xs">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block drop-shadow-xs">
               {trip.destinationSummary || 'Multi-Stop Expedition'}
             </span>
-            <h3 className="font-bold text-base tracking-tight truncate drop-shadow-xs">{trip.title}</h3>
+            <h3 className="font-extrabold text-base tracking-tight truncate drop-shadow-sm">{trip.title}</h3>
           </div>
         </div>
 
         {/* Card Body */}
-        <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
-          <div className="space-y-2">
+        <div className="p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+          <div className="space-y-2.5">
             {trip.description && (
-              <p className="text-xs text-[#6E6E73] dark:text-[#98989D] line-clamp-2 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
                 {trip.description}
               </p>
             )}
 
-            <div className="grid grid-cols-2 gap-2 text-xs text-[#6E6E73] dark:text-[#98989D] pt-1">
+            <div className="grid grid-cols-2 gap-2 text-xs text-slate-500 dark:text-slate-400 pt-1">
               <div className="flex items-center gap-1.5 truncate">
-                <Calendar className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF] flex-shrink-0" />
+                <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                 <span className="truncate">{formatDateRange(trip.startDate, trip.endDate)}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF] flex-shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 flex-shrink-0" />
                 <span>
                   {durationDays}d • {stopsCount} {stopsCount === 1 ? 'stop' : 'stops'}
                 </span>
@@ -176,17 +176,17 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
 
             {/* Preparation / Itinerary Progress */}
             {totalActivities > 0 && (
-              <div className="pt-1.5 space-y-1">
-                <div className="flex items-center justify-between text-[11px] text-[#6E6E73] dark:text-[#98989D]">
+              <div className="pt-2 space-y-1.5">
+                <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400 font-medium">
                   <span className="flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-[#34C759] dark:text-[#30D158]" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     <span>Preparation</span>
                   </span>
-                  <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">{progressPercent}%</span>
+                  <span className="font-bold text-slate-900 dark:text-slate-100">{progressPercent}%</span>
                 </div>
-                <div className="w-full bg-black/[0.06] dark:bg-white/[0.10] rounded-full h-1 overflow-hidden">
+                <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
                   <div
-                    className="bg-[#34C759] dark:bg-[#30D158] h-1 rounded-full transition-all duration-300"
+                    className="bg-emerald-500 h-1.5 rounded-full transition-all duration-300"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
@@ -195,19 +195,19 @@ export const TripCard: React.FC<TripCardProps> = ({ trip, onDelete, onShare }) =
           </div>
 
           {/* Footer with Budget & CTA */}
-          <div className="pt-3 border-t border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between">
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-semibold text-[#8E8E93] dark:text-[#98989D] block">
+              <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 block">
                 Target Budget
               </span>
-              <span className="text-xs font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
                 {formatCurrency(trip.budget)}
               </span>
             </div>
 
             <Link
               to={`/trips/${trip.id}`}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-black/[0.04] dark:bg-white/[0.06] text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-[#007AFF] hover:text-white dark:hover:bg-[#0A84FF] transition-colors"
+              className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-xs font-semibold text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all shadow-2xs"
             >
               <span>Explore</span>
               <ArrowRight className="w-3.5 h-3.5" />

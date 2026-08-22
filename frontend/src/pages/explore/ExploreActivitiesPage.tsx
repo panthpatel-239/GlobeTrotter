@@ -89,24 +89,24 @@ export const ExploreActivitiesPage: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-[#007AFF] dark:text-[#0A84FF]" />
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+          <Sparkles className="w-7 h-7 text-blue-600 dark:text-blue-400" />
           <span>Things To Do</span>
         </h1>
-        <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
           Explore iconic landmarks, authentic dining, adventure tours, and cultural experiences worldwide.
         </p>
       </div>
 
       {/* City quick filter pills */}
       {cities.length > 0 && (
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
           <button
             onClick={() => setCityId('all')}
-            className={`px-3 py-1 rounded-lg font-medium whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl font-semibold whitespace-nowrap transition-colors cursor-pointer ${
               cityId === 'all'
-                ? 'bg-[#1D1D1F] text-white dark:bg-[#F5F5F7] dark:text-[#1D1D1F]'
-                : 'bg-white dark:bg-[#1C1C1E] border border-black/[0.08] dark:border-white/[0.10] text-[#6E6E73] dark:text-[#98989D] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
+                : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
             All Destinations
@@ -115,10 +115,10 @@ export const ExploreActivitiesPage: React.FC = () => {
             <button
               key={city.id}
               onClick={() => setCityId(city.id)}
-              className={`px-3 py-1 rounded-lg font-medium whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                 cityId === city.id
-                  ? 'bg-[#1D1D1F] text-white dark:bg-[#F5F5F7] dark:text-[#1D1D1F]'
-                  : 'bg-white dark:bg-[#1C1C1E] border border-black/[0.08] dark:border-white/[0.10] text-[#6E6E73] dark:text-[#98989D] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
+                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
+                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {city.name}
@@ -138,22 +138,22 @@ export const ExploreActivitiesPage: React.FC = () => {
       />
 
       {/* Results Count */}
-      <div className="flex items-center justify-between text-xs text-[#8E8E93] dark:text-[#98989D] px-1">
+      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
         <span>
-          Found <strong className="text-[#1D1D1F] dark:text-[#F5F5F7]">{activities.length}</strong>{' '}
+          Found <strong className="text-slate-900 dark:text-slate-100 font-semibold">{activities.length}</strong>{' '}
           {activities.length === 1 ? 'activity' : 'activities'}
         </span>
       </div>
 
       {/* Activities Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <Skeleton key={i} height={280} className="rounded-2xl" />
           ))}
         </div>
       ) : activities.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {activities.map((activity) => (
             <ActivityCard
               key={activity.id}

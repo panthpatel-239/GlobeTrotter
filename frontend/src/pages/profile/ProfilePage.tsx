@@ -106,21 +106,21 @@ export const ProfilePage: React.FC = () => {
   const themeOptions: { mode: ThemeMode; label: string; icon: any; desc: string }[] = [
     {
       mode: 'light',
-      label: 'Light',
+      label: 'Light Theme',
       icon: Sun,
-      desc: 'Clean paper surface with dark typography',
+      desc: 'Crisp slate canvas with high contrast typography',
     },
     {
       mode: 'system',
-      label: 'System Preference',
+      label: 'System Sync',
       icon: Laptop,
       desc: 'Automatically synchronizes with your device theme',
     },
     {
       mode: 'dark',
-      label: 'Dark',
+      label: 'Dark Theme',
       icon: Moon,
-      desc: 'Deep blacks, subtle elevation and sharp contrast',
+      desc: 'Deep navy blacks with vivid neon accents',
     },
   ];
 
@@ -128,17 +128,17 @@ export const ProfilePage: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight flex items-center gap-2">
-          <UserIcon className="w-6 h-6 text-[#007AFF] dark:text-[#0A84FF]" />
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+          <UserIcon className="w-7 h-7 text-blue-600 dark:text-blue-400" />
           <span>Profile & Settings</span>
         </h1>
-        <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
           Manage your personal traveler identity, theme, currency, and travel preferences.
         </p>
       </div>
 
       {/* User Hero Banner */}
-      <div className="bg-white dark:bg-[#1C1C1E] p-5 sm:p-6 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card flex flex-col sm:flex-row items-center gap-5">
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center gap-5">
         <div className="relative">
           <img
             src={
@@ -146,41 +146,41 @@ export const ProfilePage: React.FC = () => {
               'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'
             }
             alt={user?.name || 'User Avatar'}
-            className="w-20 h-20 rounded-full object-cover border-2 border-black/[0.08] dark:border-white/[0.10]"
+            className="w-20 h-20 rounded-full object-cover border-2 border-slate-200 dark:border-slate-700 shadow-2xs"
           />
-          <div className="absolute bottom-0 right-0 h-5 w-5 rounded-full bg-[#34C759] dark:bg-[#30D158] border-2 border-white dark:border-[#1C1C1E] flex items-center justify-center text-white text-[10px]">
+          <div className="absolute bottom-0 right-0 h-5 w-5 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900 flex items-center justify-center text-white text-[10px] font-bold">
             ✓
           </div>
         </div>
 
         <div className="flex-1 text-center sm:text-left space-y-1">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <h2 className="text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100">
               {user?.name || 'Alex Rivera'}
             </h2>
-            <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF] self-center sm:self-auto">
+            <span className="inline-block text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-100 dark:border-blue-900/40 self-center sm:self-auto">
               Pro Explorer
             </span>
           </div>
-          <p className="text-xs text-[#6E6E73] dark:text-[#98989D] flex items-center justify-center sm:justify-start gap-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1 font-medium">
             <Mail className="w-3.5 h-3.5" />
             <span>{user?.email || 'alex@globetrotter.io'}</span>
           </p>
-          <p className="text-xs text-[#6E6E73] dark:text-[#98989D] pt-0.5 italic">{bio}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 pt-0.5 italic">{bio}</p>
         </div>
       </div>
 
       {/* Theme Switcher Section */}
-      <div className="bg-white dark:bg-[#1C1C1E] p-5 sm:p-6 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card space-y-4">
-        <div className="border-b border-black/[0.06] dark:border-white/[0.08] pb-3">
-          <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">Appearance Theme</h3>
-          <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+        <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Appearance Theme</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Select how GlobeTrotter renders across your devices. Currently active in{' '}
-            <strong className="text-[#007AFF] dark:text-[#0A84FF] capitalize">{resolvedTheme} Mode</strong>.
+            <strong className="text-blue-600 dark:text-blue-400 capitalize">{resolvedTheme} Mode</strong>.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {themeOptions.map((opt) => {
             const Icon = opt.icon;
             const isSelected = theme === opt.mode;
@@ -189,30 +189,30 @@ export const ProfilePage: React.FC = () => {
                 type="button"
                 key={opt.mode}
                 onClick={() => setTheme(opt.mode)}
-                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-blue-500/5 dark:bg-blue-500/10 border-[#007AFF] dark:border-[#0A84FF] ring-1 ring-[#007AFF]'
-                    : 'bg-black/[0.02] dark:bg-white/[0.03] border-black/[0.06] dark:border-white/[0.08] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
+                    ? 'bg-blue-50/70 dark:bg-blue-950/30 border-blue-500 ring-2 ring-blue-500/20 shadow-2xs'
+                    : 'bg-slate-50/70 dark:bg-slate-800/40 border-slate-200/60 dark:border-slate-800 hover:bg-white dark:hover:bg-slate-800 hover:border-slate-300'
                 }`}
               >
-                <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center justify-between mb-3">
                   <div
-                    className={`p-1.5 rounded-lg ${
+                    className={`p-2 rounded-xl ${
                       isSelected
-                        ? 'bg-[#007AFF] text-white dark:bg-[#0A84FF]'
-                        : 'bg-black/[0.06] dark:bg-white/[0.08] text-[#6E6E73] dark:text-[#98989D]'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-slate-200/70 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
                   </div>
                   {isSelected && (
-                    <CheckCircle2 className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF]" />
+                    <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   )}
                 </div>
 
                 <div>
-                  <h4 className="text-xs font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">{opt.label}</h4>
-                  <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D] mt-0.5 leading-relaxed">
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100">{opt.label}</h4>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                     {opt.desc}
                   </p>
                 </div>
@@ -225,18 +225,18 @@ export const ProfilePage: React.FC = () => {
       {/* Main Settings Form */}
       <form
         onSubmit={handleSave}
-        className="bg-white dark:bg-[#1C1C1E] p-5 sm:p-6 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] shadow-card space-y-5"
+        className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5"
       >
-        <div className="border-b border-black/[0.06] dark:border-white/[0.08] pb-3">
-          <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
+        <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
             Traveler Identity & Preferences
           </h3>
-          <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Configure your personal details, home airport, currency format, and travel style
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Display Name *"
             value={name}
@@ -254,7 +254,7 @@ export const ProfilePage: React.FC = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Select
             label="Preferred Currency"
             options={currencyOptions}
@@ -270,7 +270,7 @@ export const ProfilePage: React.FC = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Select
             label="Budget Preference"
             options={budgetOptions}
@@ -286,7 +286,7 @@ export const ProfilePage: React.FC = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Home Airport"
             value={homeAirport}
@@ -305,29 +305,29 @@ export const ProfilePage: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">
+          <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
             Travel Bio / Notes
           </label>
           <textarea
             rows={3}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            className="w-full rounded-lg border border-black/[0.08] dark:border-white/[0.10] bg-black/[0.02] dark:bg-white/[0.04] p-3 text-xs text-[#1D1D1F] dark:text-[#F5F5F7] placeholder:text-[#8E8E93] focus:outline-none focus:border-[#007AFF]"
+            className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 p-3.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
           />
         </div>
 
         {/* Notifications & Privacy Toggles */}
-        <div className="border-t border-black/[0.06] dark:border-white/[0.08] pt-4 space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
+        <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             Notification Preferences
           </h4>
 
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+              <p className="text-xs font-semibold text-slate-900 dark:text-slate-100">
                 Trip Departure & Milestone Reminders
               </p>
-              <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D]">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Receive automated alerts for upcoming flights, check-ins, and scheduled tours.
               </p>
             </div>
@@ -335,16 +335,16 @@ export const ProfilePage: React.FC = () => {
               type="checkbox"
               checked={tripReminders}
               onChange={(e) => setTripReminders(e.target.checked)}
-              className="h-4 w-4 rounded text-[#007AFF] focus:ring-0 cursor-pointer"
+              className="h-4 w-4 rounded text-blue-600 focus:ring-0 cursor-pointer"
             />
           </div>
 
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+              <p className="text-xs font-semibold text-slate-900 dark:text-slate-100">
                 Budget Threshold Warnings
               </p>
-              <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D]">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Get notified when active trip expenses reach 80% of target budget.
               </p>
             </div>
@@ -352,19 +352,19 @@ export const ProfilePage: React.FC = () => {
               type="checkbox"
               checked={emailAlerts}
               onChange={(e) => setEmailAlerts(e.target.checked)}
-              className="h-4 w-4 rounded text-[#007AFF] focus:ring-0 cursor-pointer"
+              className="h-4 w-4 rounded text-blue-600 focus:ring-0 cursor-pointer"
             />
           </div>
         </div>
 
-        <div className="pt-3 flex items-center justify-end gap-2 border-t border-black/[0.06] dark:border-white/[0.08]">
+        <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-slate-100 dark:border-slate-800">
           <Button
             type="submit"
             variant="primary"
             size="sm"
             leftIcon={<Save className="w-3.5 h-3.5" />}
             isLoading={isSaving}
-            className="bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] text-white font-medium text-xs shadow-xs"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl px-4 py-2 shadow-2xs"
           >
             Save Preferences
           </Button>
@@ -372,20 +372,20 @@ export const ProfilePage: React.FC = () => {
       </form>
 
       {/* Danger & Logout Zone */}
-      <div className="bg-white dark:bg-[#1C1C1E] p-5 sm:p-6 rounded-2xl border border-red-500/20 shadow-card space-y-3">
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-rose-200 dark:border-rose-900/60 shadow-sm space-y-3">
         <div>
-          <h3 className="text-sm font-bold text-[#FF3B30] dark:text-[#FF453A]">Account Session</h3>
-          <p className="text-xs text-[#6E6E73] dark:text-[#98989D]">
+          <h3 className="text-sm font-bold text-rose-600 dark:text-rose-400">Account Session</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Sign out of your active travel session
           </p>
         </div>
 
         <div className="flex items-center justify-between pt-1">
           <div>
-            <p className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+            <p className="text-xs font-semibold text-slate-900 dark:text-slate-100">
               Sign out of GlobeTrotter
             </p>
-            <p className="text-[11px] text-[#6E6E73] dark:text-[#98989D]">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
               Your journeys and data are safely saved in local storage.
             </p>
           </div>
@@ -394,7 +394,7 @@ export const ProfilePage: React.FC = () => {
             size="sm"
             leftIcon={<LogOut className="w-3.5 h-3.5" />}
             onClick={handleSignOut}
-            className="text-xs"
+            className="text-xs rounded-xl"
           >
             Sign Out
           </Button>

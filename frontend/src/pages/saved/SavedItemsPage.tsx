@@ -122,14 +122,11 @@ export const SavedItemsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 text-xs font-bold uppercase tracking-wider mb-2">
-            <FolderHeart className="w-3.5 h-3.5" />
-            <span>Wishlist & Saved Collections</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-sand-900 dark:text-[#F4F7F5] tracking-tight">
-            Saved Places & Activities
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2.5">
+            <FolderHeart className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            <span>Saved Places & Activities</span>
           </h1>
-          <p className="text-sm text-sand-600 dark:text-[#A7B3AD] mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Curate your bucket list destinations, dining spots, and cultural experiences across custom collections.
           </p>
         </div>
@@ -138,14 +135,14 @@ export const SavedItemsPage: React.FC = () => {
           variant="primary"
           leftIcon={<Sparkles className="w-4 h-4" />}
           onClick={() => navigate('/explore/cities')}
-          className="bg-brand-600 hover:bg-brand-700 dark:bg-brand-500 dark:text-sand-950 font-bold"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl px-4 py-2 shadow-2xs"
         >
           Discover More
         </Button>
       </div>
 
       {/* Collection Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
         {collections.map((col) => {
           const count =
             col === 'All' ? savedItems.length : savedItems.filter((i) => i.collection === col).length;
@@ -153,10 +150,10 @@ export const SavedItemsPage: React.FC = () => {
             <button
               key={col}
               onClick={() => setSelectedCollection(col)}
-              className={`px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 selectedCollection === col
-                  ? 'bg-sand-900 dark:bg-brand-500 text-white dark:text-sand-950 shadow-2xs'
-                  : 'bg-white dark:bg-[#121A18] border border-sand-300 dark:border-[#28342F] text-sand-600 dark:text-[#A7B3AD] hover:text-sand-900 dark:hover:text-white'
+                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
+                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {col} ({count})
@@ -167,29 +164,29 @@ export const SavedItemsPage: React.FC = () => {
 
       {/* Saved Items Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} height={280} className="rounded-3xl" />
+            <Skeleton key={i} height={280} className="rounded-2xl" />
           ))}
         </div>
       ) : filteredItems.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filteredItems.map((item) => (
             <div
               key={item.id}
-              className="bg-white dark:bg-[#121A18] rounded-3xl border border-sand-300 dark:border-[#28342F] shadow-card hover:shadow-soft transition-all overflow-hidden flex flex-col justify-between group cursor-pointer"
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between group cursor-pointer"
               onClick={() => handleItemClick(item)}
             >
-              <div className="relative h-44 w-full overflow-hidden bg-sand-100 dark:bg-[#18221F]">
+              <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                 <img
                   src={item.image}
                   alt={item.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-sand-950/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
 
                 {/* Collection Chip */}
-                <div className="absolute top-3 left-3 bg-sand-950/70 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white text-[10px] font-bold">
+                <div className="absolute top-3 left-3 bg-slate-900/70 backdrop-blur-md px-2.5 py-0.5 rounded-lg text-white text-[10px] font-semibold border border-white/10">
                   {item.collection}
                 </div>
 
@@ -199,26 +196,26 @@ export const SavedItemsPage: React.FC = () => {
                     e.stopPropagation();
                     handleRemove(item.itemId);
                   }}
-                  className="absolute top-3 right-3 p-1.5 rounded-full bg-rose-500 text-white shadow-md hover:bg-rose-600 transition-colors cursor-pointer"
+                  className="absolute top-3 right-3 p-1.5 rounded-xl bg-rose-500 text-white shadow-md hover:bg-rose-600 transition-colors cursor-pointer"
                   title="Remove from saved"
                 >
                   <Bookmark className="w-3.5 h-3.5 fill-white" />
                 </button>
 
                 <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <h3 className="text-base font-bold truncate drop-shadow">{item.title}</h3>
+                  <h3 className="text-sm font-bold truncate drop-shadow-sm">{item.title}</h3>
                   {item.subtitle && (
-                    <p className="text-xs text-sand-200 truncate font-medium">{item.subtitle}</p>
+                    <p className="text-xs text-slate-200 truncate font-medium">{item.subtitle}</p>
                   )}
                 </div>
               </div>
 
               <div className="p-4 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-sand-400 block tracking-wider">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 block tracking-wider">
                     {item.type === 'destination' ? 'Avg. Daily' : 'Activity Cost'}
                   </span>
-                  <span className="text-sm font-extrabold text-sand-900 dark:text-[#F4F7F5]">
+                  <span className="text-sm font-extrabold text-slate-900 dark:text-slate-100">
                     {item.cost && item.cost > 0 ? formatCurrency(item.cost) : 'Free / Varies'}
                   </span>
                 </div>
@@ -231,6 +228,7 @@ export const SavedItemsPage: React.FC = () => {
                     e.stopPropagation();
                     handleAddToTrip(item);
                   }}
+                  className="rounded-xl text-xs font-semibold"
                 >
                   Add to Trip
                 </Button>
