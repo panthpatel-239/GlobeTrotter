@@ -46,15 +46,18 @@ app.use(notFoundHandler);
 // Centralized Error Handling Middleware
 app.use(errorHandler);
 
-// Start server
-const server = app.listen(env.PORT, () => {
-  console.log(`==================================================`);
-  console.log(`🚀 GlobeTrotter API Server running on port ${env.PORT}`);
-  console.log(`🌍 Environment: ${env.NODE_ENV}`);
-  console.log(`📡 Health Check: http://localhost:${env.PORT}/api/health`);
-  console.log(`💻 Frontend URL: ${env.FRONTEND_URL}`);
-  console.log(`==================================================`);
-});
+// Start server only when not running in test mode
+let server: any = null;
+if (process.env.NODE_ENV !== 'test') {
+  server = app.listen(env.PORT, () => {
+    console.log(`==================================================`);
+    console.log(`🚀 GlobeTrotter API Server running on port ${env.PORT}`);
+    console.log(`🌍 Environment: ${env.NODE_ENV}`);
+    console.log(`📡 Health Check: http://localhost:${env.PORT}/api/health`);
+    console.log(`💻 Frontend URL: ${env.FRONTEND_URL}`);
+    console.log(`==================================================`);
+  });
+}
 
 // Graceful shutdown
 const gracefulShutdown = async (signal: string) => {

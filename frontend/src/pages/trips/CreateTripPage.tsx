@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Compass,
@@ -17,6 +17,8 @@ import {
   Landmark,
   Plus,
   X,
+  Search,
+  Globe,
 } from 'lucide-react';
 import { tripService } from '../../services/tripService';
 import { cityService } from '../../services/cityService';
@@ -26,6 +28,7 @@ import { City, Activity } from '../../types';
 import { Button } from '../../components/common/Button';
 import { useToast } from '../../context/ToastContext';
 import { formatCurrency, calculateDaysBetween } from '../../utils/formatters';
+import { searchGlobalDestinations, GLOBAL_DESTINATIONS } from '../../utils/destinationsData';
 
 const TRIP_TYPES = [
   { id: 'Culture', label: 'Cultural & Heritage', icon: Landmark, desc: 'Museums, ancient temples & royal palaces' },
@@ -49,9 +52,12 @@ export const CreateTripPage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCities, setSelectedCities] = useState<City[]>([]);
-  const [customDestination, setCustomDestination] = useState('');
+  const [destinationSearch, setDestinationSearch] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedTripTypes, setSelectedTripTypes] = useState<string[]>(['Culture']);
   const [selectedCityFilter, setSelectedCityFilter] = useState<string>('all');
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
   const [startDate, setStartDate] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 14);
@@ -90,18 +96,29 @@ export const CreateTripPage: React.FC = () => {
     loadInitialData();
   }, []);
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Dynamic city search across seeded + global destinations database with fuzzy typo matching
+  const dynamicCityResults = useMemo(() => {
+    return searchGlobalDestinations(destinationSearch, cities);
+  }, [destinationSearch, cities]);
+
   // Multi-City Toggle
   const handleToggleCity = (city: City) => {
     setSelectedCities((prev) => {
-      const isSelected = prev.some((c) => c.id === city.id);
+      const isSelected = prev.some((c) => c.id === city.id || c.name.toLowerCase() === city.name.toLowerCase());
       let updated: City[];
       if (isSelected) {
-        if (prev.length === 1 && !customDestination.trim()) {
-          // Keep at least one or allow unselecting if custom destination is entered
-          updated = [];
-        } else {
-          updated = prev.filter((c) => c.id !== city.id);
-        }
+        updated = prev.filter((c) => c.id !== city.id && c.name.toLowerCase() !== city.name.toLowerCase());
       } else {
         updated = [...prev, city];
       }
@@ -120,6 +137,32 @@ export const CreateTripPage: React.FC = () => {
       }
       return updated;
     });
+  };
+
+  // Add custom city from typed text
+  const handleAddCustomCity = (customName: string) => {
+    if (!customName.trim()) return;
+    const cleanName = customName.trim();
+    
+    // Check if matched in global destinations
+    const matched = searchGlobalDestinations(cleanName, cities);
+    if (matched.length > 0 && (matched[0].name.toLowerCase() === cleanName.toLowerCase() || matched[0].name.toLowerCase().includes(cleanName.toLowerCase()))) {
+      handleToggleCity(matched[0]);
+    } else {
+      const newCustomCity: City = {
+        id: `custom-${Date.now()}`,
+        name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
+        country: 'Global Destination',
+        description: `Custom destination stop in ${cleanName}`,
+        image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80',
+        costIndex: 'moderate',
+        popularityScore: 85,
+        averageDailyCost: 80,
+      };
+      handleToggleCity(newCustomCity);
+    }
+    setDestinationSearch('');
+    setIsSearchFocused(false);
   };
 
   // Multi-Style Toggle
@@ -148,8 +191,8 @@ export const CreateTripPage: React.FC = () => {
       }
     }
     if (step === 2) {
-      if (selectedCities.length === 0 && !customDestination.trim()) {
-        toastError('Destination Required', 'Please select at least one destination city or enter a custom location.');
+      if (selectedCities.length === 0) {
+        toastError('Destination Required', 'Please select at least one destination city.');
         return false;
       }
     }
@@ -190,7 +233,7 @@ export const CreateTripPage: React.FC = () => {
       const destinationSummary =
         cityNames.length > 0
           ? cityNames.join(', ')
-          : customDestination || 'Global Explorer';
+          : 'Global Explorer';
 
       const styleLabels = selectedTripTypes
         .map((t) => TRIP_TYPES.find((item) => item.id === t)?.label || t)
@@ -221,7 +264,7 @@ export const CreateTripPage: React.FC = () => {
                 cityId: city.id,
                 cityName: city.name,
                 country: city.country,
-                coverImage: city.image,
+                coverImage: city.image || coverImage,
                 arrivalDate: arrival.toISOString().split('T')[0],
                 departureDate: departure.toISOString().split('T')[0],
                 order: idx + 1,
@@ -242,7 +285,7 @@ export const CreateTripPage: React.FC = () => {
               {
                 id: `stop-${Date.now()}`,
                 cityId: 'city-custom',
-                cityName: customDestination || 'Global Explorer',
+                cityName: 'Global Explorer',
                 country: 'International',
                 coverImage: coverImage,
                 arrivalDate: startDate,
@@ -434,7 +477,7 @@ export const CreateTripPage: React.FC = () => {
           </div>
         )}
 
-        {/* STEP 2: Destination Cities (Multi-Select) */}
+        {/* STEP 2: Destination Cities (Dynamic Search & Multi-Select) */}
         {currentStep === 2 && (
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -443,7 +486,7 @@ export const CreateTripPage: React.FC = () => {
                   Choose your destinations
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Select one or more cities for your expedition, or enter a custom location.
+                  Search from global cities with dynamic auto-suggestions or select from curated destinations.
                 </p>
               </div>
 
@@ -459,11 +502,11 @@ export const CreateTripPage: React.FC = () => {
             {selectedCities.length > 0 && (
               <div className="flex flex-wrap gap-2 p-2.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
                 <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 self-center mr-1">
-                  Stops:
+                  Selected Stops:
                 </span>
                 {selectedCities.map((city, idx) => (
                   <span
-                    key={city.id}
+                    key={`${city.id}-${idx}`}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-semibold shadow-2xs border border-slate-200 dark:border-slate-700"
                   >
                     <span className="w-4 h-4 rounded-full bg-blue-600 text-white text-[10px] flex items-center justify-center font-bold">
@@ -485,53 +528,181 @@ export const CreateTripPage: React.FC = () => {
               </div>
             )}
 
-            {/* Cities Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-h-72 overflow-y-auto p-1">
-              {cities.map((city) => {
-                const selectedIndex = selectedCities.findIndex((c) => c.id === city.id);
-                const isSelected = selectedIndex >= 0;
-
-                return (
-                  <div
-                    key={city.id}
-                    onClick={() => handleToggleCity(city)}
-                    className={`rounded-xl border overflow-hidden cursor-pointer transition-all ${
-                      isSelected
-                        ? 'border-blue-600 ring-2 ring-blue-500/20 shadow-sm'
-                        : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
-                    }`}
+            {/* Dynamic Search & Autocomplete Box */}
+            <div ref={searchContainerRef} className="relative">
+              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
+                Search Cities Worldwide / Add Custom Destination:
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Search className="w-4 h-4" />
+                </div>
+                <input
+                  type="text"
+                  value={destinationSearch}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onChange={(e) => {
+                    setDestinationSearch(e.target.value);
+                    setIsSearchFocused(true);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (dynamicCityResults.length > 0) {
+                        handleToggleCity(dynamicCityResults[0]);
+                        setDestinationSearch('');
+                        setIsSearchFocused(false);
+                      } else if (destinationSearch.trim()) {
+                        handleAddCustomCity(destinationSearch);
+                      }
+                    }
+                  }}
+                  placeholder="Type any city or country (e.g. Ahmedabad, Bali, Tokyo, Paris, Rome, Sydney...)"
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/70 pl-10 pr-9 py-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                />
+                {destinationSearch && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDestinationSearch('');
+                      setIsSearchFocused(false);
+                    }}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
                   >
-                    <div className="relative h-20 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-                      <img src={city.image} alt={city.name} className="w-full h-full object-cover" />
-                      {isSelected && (
-                        <div className="absolute top-1.5 right-1.5 flex items-center gap-1 px-1.5 py-0.5 bg-blue-600 text-white text-[10px] font-extrabold rounded-md shadow-sm">
-                          <Check className="w-3 h-3" />
-                          <span>Stop #{selectedIndex + 1}</span>
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
+              {/* Dynamic Suggestion Dropdown */}
+              {isSearchFocused && destinationSearch.trim().length > 0 && (
+                <div className="absolute z-30 left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl max-h-72 overflow-y-auto p-1.5 space-y-1 divide-y divide-slate-100 dark:divide-slate-800/60">
+                  {dynamicCityResults.length > 0 ? (
+                    dynamicCityResults.map((city) => {
+                      const isSelected = selectedCities.some((c) => c.id === city.id || c.name.toLowerCase() === city.name.toLowerCase());
+                      return (
+                        <div
+                          key={city.id}
+                          onClick={() => {
+                            handleToggleCity(city);
+                            setDestinationSearch('');
+                            setIsSearchFocused(false);
+                          }}
+                          className={`p-2 rounded-lg flex items-center justify-between gap-3 cursor-pointer transition-colors ${
+                            isSelected
+                              ? 'bg-blue-50/80 dark:bg-blue-950/40 text-blue-900 dark:text-blue-100'
+                              : 'hover:bg-slate-50 dark:hover:bg-slate-800/70 text-slate-800 dark:text-slate-200'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <img
+                              src={city.image}
+                              alt={city.name}
+                              className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
+                            />
+                            <div className="truncate">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-xs font-bold truncate">{city.name}</span>
+                                <span className="text-[11px] text-slate-500 dark:text-slate-400">({city.country})</span>
+                              </div>
+                              <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                                {city.description || `Explore attractions & culture in ${city.name}`}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {isSelected ? (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-bold">
+                                <Check className="w-3 h-3" />
+                                Added
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 hover:text-blue-600 text-slate-600 dark:text-slate-300 text-[10px] font-semibold">
+                                <Plus className="w-3 h-3" />
+                                Select
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      )}
+                      );
+                    })
+                  ) : null}
+
+                  {/* Fallback option to add as custom destination */}
+                  <div
+                    onClick={() => handleAddCustomCity(destinationSearch)}
+                    className="p-2.5 rounded-lg flex items-center justify-between gap-3 cursor-pointer hover:bg-blue-50/70 dark:hover:bg-blue-950/40 text-blue-600 dark:text-blue-400 transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                        <Globe className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold">Add "{destinationSearch}" as Custom Destination</span>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400">Add to your trip itinerary stops</p>
+                      </div>
                     </div>
-                    <div className="p-2.5 bg-white dark:bg-slate-900">
-                      <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
-                        {city.name}
-                      </h4>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{city.country}</p>
-                    </div>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-blue-600 text-white text-[10px] font-bold">
+                      <Plus className="w-3 h-3" />
+                      Add
+                    </span>
                   </div>
-                );
-              })}
+                </div>
+              )}
             </div>
 
+            {/* Cities Grid with dynamic live filter */}
             <div>
-              <label className="block text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
-                Or Add Custom City / Region:
-              </label>
-              <input
-                type="text"
-                value={customDestination}
-                onChange={(e) => setCustomDestination(e.target.value)}
-                placeholder="e.g. Patagonia, Reykjavik, Jaipur"
-                className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
-              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  {destinationSearch.trim() ? `Matching Destinations (${dynamicCityResults.length})` : 'Popular & Curated Destinations:'}
+                </span>
+                {destinationSearch.trim() && (
+                  <button
+                    type="button"
+                    onClick={() => setDestinationSearch('')}
+                    className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline cursor-pointer font-medium"
+                  >
+                    Show all popular cities
+                  </button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-h-72 overflow-y-auto p-1">
+                {dynamicCityResults.slice(0, 16).map((city) => {
+                  const selectedIndex = selectedCities.findIndex((c) => c.id === city.id || c.name.toLowerCase() === city.name.toLowerCase());
+                  const isSelected = selectedIndex >= 0;
+
+                  return (
+                    <div
+                      key={city.id}
+                      onClick={() => handleToggleCity(city)}
+                      className={`rounded-xl border overflow-hidden cursor-pointer transition-all ${
+                        isSelected
+                          ? 'border-blue-600 ring-2 ring-blue-500/20 shadow-sm'
+                          : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                      }`}
+                    >
+                      <div className="relative h-20 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        <img src={city.image} alt={city.name} className="w-full h-full object-cover" />
+                        {isSelected && (
+                          <div className="absolute top-1.5 right-1.5 flex items-center gap-1 px-1.5 py-0.5 bg-blue-600 text-white text-[10px] font-extrabold rounded-md shadow-sm">
+                            <Check className="w-3 h-3" />
+                            <span>Stop #{selectedIndex + 1}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-2.5 bg-white dark:bg-slate-900">
+                        <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
+                          {city.name}
+                        </h4>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{city.country}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
@@ -781,15 +952,10 @@ export const CreateTripPage: React.FC = () => {
                 <span className="text-slate-500 dark:text-slate-400 mt-1">Destinations ({selectedCities.length}):</span>
                 <div className="flex flex-wrap gap-1.5 justify-end max-w-xs">
                   {selectedCities.map((c, i) => (
-                    <span key={c.id} className="px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-bold text-[11px] border border-blue-200 dark:border-blue-800/50">
+                    <span key={`${c.id}-${i}`} className="px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-bold text-[11px] border border-blue-200 dark:border-blue-800/50">
                       #{i + 1} {c.name}
                     </span>
                   ))}
-                  {customDestination && (
-                    <span className="px-2 py-0.5 rounded-md bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-[11px]">
-                      {customDestination}
-                    </span>
-                  )}
                 </div>
               </div>
 

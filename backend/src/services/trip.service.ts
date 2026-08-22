@@ -1,10 +1,9 @@
 import { prisma } from '../config/prisma';
 import { ApiError } from '../utils/apiError';
 import { CreateTripInput, UpdateTripInput } from '../validators/trip.validator';
-import { TripSummary } from '../types';
 
 export class TripService {
-  static async getUserTrips(userId: string): Promise<TripSummary[]> {
+  static async getUserTrips(userId: string) {
     const trips = await prisma.trip.findMany({
       where: { userId },
       orderBy: { startDate: 'desc' },
@@ -33,28 +32,36 @@ export class TripService {
     return trips.map((trip) => {
       const totalExpenses = trip.expenses.reduce((sum, exp) => sum + exp.amount, 0);
       const uniqueCityIds = new Set(trip.stops.map((s) => s.cityId));
+      const cityNames = trip.stops.map((s) => s.city?.name).filter(Boolean);
 
       return {
         id: trip.id,
         title: trip.title,
         description: trip.description,
-        startDate: trip.startDate,
-        endDate: trip.endDate,
+        startDate: trip.startDate ? trip.startDate.toISOString().split('T')[0] : '',
+        endDate: trip.endDate ? trip.endDate.toISOString().split('T')[0] : '',
         coverImage: trip.coverImage,
+        budget: trip.budgetLimit || 0,
         budgetLimit: trip.budgetLimit,
+        status: 'planned' as const,
         isPublic: trip.isPublic,
         shareId: trip.shareId,
+        destinationSummary: cityNames.join(', ') || 'Multi-City Expedition',
         destinationCount: uniqueCityIds.size || trip.stops.length,
         totalExpenses,
         stops: trip.stops.map((stop) => ({
           id: stop.id,
+          tripId: trip.id,
           cityId: stop.cityId,
           cityName: stop.city.name,
+          country: stop.city.country,
           cityCountry: stop.city.country,
           cityImage: stop.city.image,
-          arrivalDate: stop.arrivalDate,
-          departureDate: stop.departureDate,
+          coverImage: stop.city.image,
+          arrivalDate: stop.arrivalDate ? stop.arrivalDate.toISOString().split('T')[0] : '',
+          departureDate: stop.departureDate ? stop.departureDate.toISOString().split('T')[0] : '',
           order: stop.order,
+          activities: [],
         })),
         createdAt: trip.createdAt,
         updatedAt: trip.updatedAt,
@@ -73,10 +80,16 @@ export class TripService {
         coverImage: input.coverImage || null,
         budgetLimit: input.budgetLimit || null,
         isPublic: input.isPublic || false,
+        shareId: `gt-${userId.slice(0, 8)}-${Date.now().toString().slice(-4)}`,
       },
     });
 
-    return trip;
+    return {
+      ...trip,
+      budget: trip.budgetLimit,
+      startDate: trip.startDate ? trip.startDate.toISOString().split('T')[0] : '',
+      endDate: trip.endDate ? trip.endDate.toISOString().split('T')[0] : '',
+    };
   }
 
   static async getTripById(tripId: string, userId: string) {
@@ -118,10 +131,61 @@ export class TripService {
     }
 
     const totalExpenses = trip.expenses.reduce((sum, exp) => sum + exp.amount, 0);
+    const cityNames = trip.stops.map((s) => s.city?.name).filter(Boolean);
 
     return {
-      ...trip,
+      id: trip.id,
+      userId: trip.userId,
+      title: trip.title,
+      description: trip.description,
+      startDate: trip.startDate ? trip.startDate.toISOString().split('T')[0] : '',
+      endDate: trip.endDate ? trip.endDate.toISOString().split('T')[0] : '',
+      coverImage: trip.coverImage,
+      budget: trip.budgetLimit || 0,
+      budgetLimit: trip.budgetLimit,
+      status: 'planned' as const,
+      isPublic: trip.isPublic,
+      shareId: trip.shareId,
+      destinationSummary: cityNames.join(', ') || 'Multi-City Expedition',
+      user: trip.user,
+      stops: trip.stops.map((stop) => ({
+        id: stop.id,
+        tripId: trip.id,
+        cityId: stop.cityId,
+        cityName: stop.city?.name || 'City',
+        country: stop.city?.country || 'Country',
+        coverImage: stop.city?.image,
+        arrivalDate: stop.arrivalDate ? stop.arrivalDate.toISOString().split('T')[0] : '',
+        departureDate: stop.departureDate ? stop.departureDate.toISOString().split('T')[0] : '',
+        order: stop.order,
+        activities: stop.tripActivities.map((ta, idx) => ({
+          id: ta.id,
+          tripId: trip.id,
+          stopId: stop.id,
+          activityId: ta.activityId,
+          name: ta.activity?.name || 'Activity',
+          category: ta.activity?.category || 'Sightseeing',
+          dayNumber: (idx % 7) + 1,
+          startTime: ta.startTime || '10:00 AM',
+          cost: ta.cost || ta.activity?.estimatedCost || 0,
+          location: ta.activity?.name || stop.city?.name,
+          notes: ta.activity?.description,
+          isCompleted: false,
+        })),
+      })),
+      expenses: trip.expenses.map((exp) => ({
+        id: exp.id,
+        tripId: exp.tripId,
+        title: exp.description,
+        description: exp.description,
+        category: exp.category,
+        amount: exp.amount,
+        currency: 'USD',
+        date: exp.date ? exp.date.toISOString().split('T')[0] : '',
+      })),
       totalExpenses,
+      createdAt: trip.createdAt,
+      updatedAt: trip.updatedAt,
     };
   }
 
@@ -150,22 +214,14 @@ export class TripService {
     const updatedTrip = await prisma.trip.update({
       where: { id: tripId },
       data: dataToUpdate,
-      include: {
-        stops: {
-          orderBy: { order: 'asc' },
-          include: {
-            city: true,
-            tripActivities: {
-              include: {
-                activity: true,
-              },
-            },
-          },
-        },
-      },
     });
 
-    return updatedTrip;
+    return {
+      ...updatedTrip,
+      budget: updatedTrip.budgetLimit,
+      startDate: updatedTrip.startDate ? updatedTrip.startDate.toISOString().split('T')[0] : '',
+      endDate: updatedTrip.endDate ? updatedTrip.endDate.toISOString().split('T')[0] : '',
+    };
   }
 
   static async deleteTrip(tripId: string, userId: string) {

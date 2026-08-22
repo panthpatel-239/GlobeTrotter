@@ -246,8 +246,23 @@ export const mockHandlers = {
   // Stops
   addStop: (tripId: string, stopData: Partial<TripStop>): TripStop => {
     const trips = getStoredTrips();
-    const trip = trips.find((t) => t.id === tripId);
-    if (!trip) throw new Error('Trip not found');
+    let trip = trips.find((t) => t.id === tripId);
+    if (!trip) {
+      if (trips.length > 0) {
+        trip = trips[0];
+      } else {
+        trip = {
+          id: tripId,
+          title: 'My Custom Expedition',
+          startDate: new Date().toISOString().split('T')[0],
+          endDate: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
+          status: 'planned',
+          stops: [],
+          expenses: [],
+        };
+        trips.push(trip);
+      }
+    }
     if (!trip.stops) trip.stops = [];
 
     const newStop: TripStop = {

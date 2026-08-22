@@ -136,11 +136,18 @@ export const TripDetailPage: React.FC = () => {
   const handleAddStop = async (stopData: any) => {
     if (!trip) return;
     try {
-      await itineraryService.addStop(trip.id, stopData);
+      const newStop = await itineraryService.addStop(trip.id, stopData);
+      if (newStop) {
+        setTrip((prev) => {
+          if (!prev) return prev;
+          const stops = [...(prev.stops || []), newStop];
+          return { ...prev, stops };
+        });
+      }
       success('Stop Added', `${stopData.cityName} added to your journey!`);
       await fetchTripDetails();
     } catch (err: any) {
-      toastError('Failed to add stop', err.message);
+      toastError('Failed to add stop', err.response?.data?.message || err.message || 'Could not add stop');
     }
   };
 

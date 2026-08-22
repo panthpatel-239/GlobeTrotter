@@ -9,8 +9,16 @@ import { validateRequest } from '../middleware/validate.middleware';
 import { createTripSchema, updateTripSchema } from '../validators/trip.validator';
 import { createStopSchema, updateStopSchema, createTripActivitySchema } from '../validators/itinerary.validator';
 import { createExpenseSchema, updateExpenseSchema } from '../validators/expense.validator';
+import reservationRoutes from './reservation.routes';
+import documentRoutes from './document.routes';
+import checklistRoutes from './checklist.routes';
 
 const router = Router();
+
+// Nested utilities per trip
+router.use('/:tripId/reservations', reservationRoutes);
+router.use('/:tripId/documents', documentRoutes);
+router.use('/:tripId/checklist', checklistRoutes);
 
 // All trip routes require authentication
 router.use(authMiddleware);
