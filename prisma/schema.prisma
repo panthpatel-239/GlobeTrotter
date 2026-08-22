@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  profileImage String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  trips        Trip[]
+
+  @@map("users")
+}
+
+model Trip {
+  id          String     @id @default(uuid())
+  userId      String
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  coverImage  String?
+  budgetLimit Float?
+  isPublic    Boolean    @default(false)
+  shareId     String?    @unique
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stops       TripStop[]
+  expenses    Expense[]
+
+  @@index([userId])
+  @@index([shareId])
+  @@map("trips")
+}
+
+model City {
+  id          String     @id @default(uuid())
+  name        String
+  country     String
+  description String
+  image       String
+  costIndex   Int        @default(3) // 1 (budget) to 5 (luxury)
+  popularity  Int        @default(0) // 0 to 100 rating
+  createdAt   DateTime   @default(now())
+
+  activities  Activity[]
+  tripStops   TripStop[]
+
+  @@index([name])
+  @@index([country])
+  @@map("cities")
+}
+
+model TripStop {
+  id            String         @id @default(uuid())
+  tripId        String
+  cityId        String
+  arrivalDate   DateTime
+  departureDate DateTime
+  order         Int            @default(0)
+  createdAt     DateTime       @default(now())
+
+  trip          Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  city          City           @relation(fields: [cityId], references: [id], onDelete: Restrict)
+  tripActivities TripActivity[]
+
+  @@index([tripId])
+  @@index([cityId])
+  @@map("trip_stops")
+}
+
+model Activity {
+  id            String         @id @default(uuid())
+  cityId        String
+  name          String
+  description   String
+  category      String         // Sightseeing, Food, Adventure, Cultural, Nature, Shopping, etc.
+  estimatedCost Float          @default(0)
+  duration      String         // e.g. "2 hours", "Half day", "Full day"
+  image         String
+  createdAt     DateTime       @default(now())
+
+  city          City           @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  tripActivities TripActivity[]
+
+  @@index([cityId])
+  @@index([category])
+  @@map("activities")
+}
+
+model TripActivity {
+  id          String    @id @default(uuid())
+  tripStopId  String
+  activityId  String
+  date        DateTime
+  startTime   String?   // e.g. "10:00 AM"
+  cost        Float     @default(0)
+  createdAt   DateTime  @default(now())
+
+  tripStop    TripStop  @relation(fields: [tripStopId], references: [id], onDelete: Cascade)
+  activity    Activity  @relation(fields: [activityId], references: [id], onDelete: Restrict)
+
+  @@index([tripStopId])
+  @@index([activityId])
+  @@map("trip_activities")
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  tripId      String
+  category    String   // transport, accommodation, activities, food, other
+  description String
+  amount      Float
+  date        DateTime
+  createdAt   DateTime @default(now())
+
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId])
+  @@index([category])
+  @@map("expenses")
+}
