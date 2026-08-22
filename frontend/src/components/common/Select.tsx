@@ -19,37 +19,37 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={selectId} className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+          <label htmlFor={selectId} className="block text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">
             {label}
           </label>
         )}
-        <div className="relative rounded-xl shadow-sm">
+        <div className="relative rounded-lg shadow-xs">
           <select
             id={selectId}
             ref={ref}
-            className={`w-full appearance-none rounded-xl border bg-white px-3.5 py-2.5 text-sm text-slate-900 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:bg-slate-50 disabled:text-slate-500 disabled:cursor-not-allowed ${
+            className={`w-full appearance-none rounded-lg border bg-black/[0.02] dark:bg-white/[0.04] px-3 py-2 text-xs text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors focus:outline-none focus:ring-1 focus:ring-[#007AFF] focus:border-[#007AFF] disabled:opacity-50 disabled:cursor-not-allowed ${
               error
-                ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20'
-                : 'border-slate-200 focus:border-brand-500 focus:ring-brand-500/20 hover:border-slate-300'
+                ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+                : 'border-black/[0.08] dark:border-white/[0.10] hover:border-black/[0.15] dark:hover:border-white/[0.20]'
             } ${className}`}
             {...props}
           >
             {options.map((opt) => (
-              <option key={opt.value} value={opt.value}>
+              <option key={opt.value} value={opt.value} className="bg-white dark:bg-[#1C1C1E] text-[#1D1D1F] dark:text-[#F5F5F7]">
                 {opt.label}
               </option>
             ))}
           </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
-            <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#8E8E93]">
+            <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 20 20">
               <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
             </svg>
           </div>
         </div>
         {error ? (
-          <p className="mt-1.5 text-xs text-rose-600 font-medium">{error}</p>
+          <p className="mt-1 text-[11px] text-[#FF3B30] dark:text-[#FF453A] font-medium">{error}</p>
         ) : helperText ? (
-          <p className="mt-1 text-xs text-slate-500">{helperText}</p>
+          <p className="mt-0.5 text-[11px] text-[#6E6E73] dark:text-[#98989D]">{helperText}</p>
         ) : null}
       </div>
     );

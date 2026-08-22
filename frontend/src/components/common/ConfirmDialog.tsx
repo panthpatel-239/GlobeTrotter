@@ -28,22 +28,28 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="sm">
-      <div className="text-center pt-2 pb-4">
-        <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full mb-4 ${
-          variant === 'danger' ? 'bg-rose-100 text-rose-600' : 'bg-brand-100 text-brand-600'
-        }`}>
-          <AlertTriangle className="h-7 w-7" />
+      <div className="text-center pt-2 pb-2">
+        <div
+          className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full mb-3 ${
+            variant === 'danger'
+              ? 'bg-red-500/10 text-[#FF3B30] dark:text-[#FF453A]'
+              : 'bg-blue-500/10 text-[#007AFF] dark:text-[#0A84FF]'
+          }`}
+        >
+          <AlertTriangle className="h-6 w-6" />
         </div>
-        <h3 className="text-lg font-bold text-slate-900 mb-2">{title}</h3>
-        <p className="text-sm text-slate-500 mb-6">{message}</p>
-        <div className="flex items-center justify-center gap-3">
-          <Button variant="outline" onClick={onClose} disabled={isLoading}>
+        <h3 className="text-base font-bold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">{title}</h3>
+        <p className="text-xs text-[#6E6E73] dark:text-[#98989D] mb-5 leading-relaxed">{message}</p>
+        <div className="flex items-center justify-center gap-2">
+          <Button variant="outline" size="sm" onClick={onClose} disabled={isLoading} className="text-xs">
             {cancelText}
           </Button>
           <Button
             variant={variant === 'danger' ? 'danger' : 'primary'}
+            size="sm"
             onClick={onConfirm}
             isLoading={isLoading}
+            className="text-xs"
           >
             {confirmText}
           </Button>

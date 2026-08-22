@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Search,
@@ -11,17 +11,31 @@ import {
   X,
   Calendar,
   DollarSign,
-  TrendingUp,
-  Globe2,
+  Ticket,
+  ShieldCheck,
+  CheckSquare,
+  Bookmark,
+  Clock,
+  Check,
 } from 'lucide-react';
-import { tripService } from '../../services/tripService';
-import { cityService } from '../../services/cityService';
-import { activityService } from '../../services/activityService';
-import { Trip, City, Activity } from '../../types';
+import { searchService, SearchResults } from '../../services/searchService';
+import { reservationService } from '../../services/reservationService';
+import { expenseService } from '../../services/expenseService';
+import { Reservation, Expense } from '../../types';
 
 export interface CommandPaletteProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface PaletteItem {
+  id: string;
+  type: 'action' | 'destination' | 'trip' | 'activity' | 'reservation' | 'expense';
+  title: string;
+  subtitle: string;
+  icon: any;
+  path: string;
+  meta?: string;
 }
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
@@ -29,122 +43,275 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [query, setQuery] = useState('');
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [cities, setCities] = useState<City[]>([]);
-  const [activities, setActivities] = useState<Activity[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [results, setResults] = useState<SearchResults>({
+    destinations: [],
+    trips: [],
+    activities: [],
+    itineraryItems: [],
+  });
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  const [recentSearches, setRecentSearches] = useState<string[]>([
+    'Tokyo, Japan',
+    'Tsukiji Outer Market',
+    'Japan Grand Expedition',
+  ]);
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 50);
-
-      const loadData = async () => {
-        try {
-          const [t, c, a] = await Promise.all([
-            tripService.getTrips(),
-            cityService.getCities(),
-            activityService.getActivities(),
-          ]);
-          setTrips(t);
-          setCities(c);
-          setActivities(a);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      loadData();
+      setSelectedIndex(0);
+      setTimeout(() => inputRef.current?.focus(), 40);
+      reservationService.getReservations().then(setReservations).catch(() => {});
+      expenseService.getExpenses('trip-1').then(setExpenses).catch(() => {});
     } else {
       setQuery('');
     }
   }, [isOpen]);
 
-  // Global keydown listener for ESC
+  // Debounced search
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults({ destinations: [], trips: [], activities: [], itineraryItems: [] });
+      setSelectedIndex(0);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      const res = await searchService.searchAll(query);
+      setResults(res);
+      setSelectedIndex(0);
+    }, 120);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const defaultActions = useMemo(
+    () => [
+      {
+        id: 'act-plan',
+        type: 'action' as const,
+        title: 'Plan a New Journey',
+        subtitle: 'Build a multi-city itinerary from scratch',
+        icon: PlusCircle,
+        path: '/trips/create',
+      },
+      {
+        id: 'act-dest',
+        type: 'action' as const,
+        title: 'Explore Global Destinations',
+        subtitle: 'Browse trending cities, landmarks & daily budgets',
+        icon: MapPin,
+        path: '/explore/cities',
+      },
+      {
+        id: 'act-act',
+        type: 'action' as const,
+        title: 'Discover Things To Do',
+        subtitle: 'Search tours, dining, adventure hikes & museums',
+        icon: Sparkles,
+        path: '/explore/activities',
+      },
+      {
+        id: 'act-trips',
+        type: 'action' as const,
+        title: 'My Travel Journeys',
+        subtitle: 'Manage your active, planned and past trips',
+        icon: Compass,
+        path: '/trips',
+      },
+      {
+        id: 'act-cal',
+        type: 'action' as const,
+        title: 'Travel Calendar & Schedule',
+        subtitle: 'View day-by-day travel agenda and milestones',
+        icon: Calendar,
+        path: '/calendar',
+      },
+      {
+        id: 'act-budget',
+        type: 'action' as const,
+        title: 'Budget & Cost Breakdown',
+        subtitle: 'Track expenses and spending forecasts',
+        icon: DollarSign,
+        path: '/budget',
+      },
+      {
+        id: 'act-res',
+        type: 'action' as const,
+        title: 'Reservations & Bookings',
+        subtitle: 'Flights, hotels, trains, and dining bookings',
+        icon: Ticket,
+        path: '/reservations',
+      },
+      {
+        id: 'act-doc',
+        type: 'action' as const,
+        title: 'Document Wallet',
+        subtitle: 'Passports, visas, insurance & flight tickets',
+        icon: ShieldCheck,
+        path: '/documents',
+      },
+      {
+        id: 'act-saved',
+        type: 'action' as const,
+        title: 'Saved Places & Wishlists',
+        subtitle: 'View saved destinations and favorite activities',
+        icon: Bookmark,
+        path: '/saved',
+      },
+      {
+        id: 'act-profile',
+        type: 'action' as const,
+        title: 'Profile & Settings',
+        subtitle: 'Preferences, currency, theme & traveler identity',
+        icon: User,
+        path: '/profile',
+      },
+    ],
+    []
+  );
+
+  // Grouped items
+  const matchedReservations = useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase();
+    return reservations.filter(
+      (r) =>
+        r.title.toLowerCase().includes(q) ||
+        r.provider.toLowerCase().includes(q) ||
+        r.confirmationNumber.toLowerCase().includes(q)
+    );
+  }, [query, reservations]);
+
+  const matchedExpenses = useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase();
+    return expenses.filter(
+      (e) =>
+        e.title.toLowerCase().includes(q) ||
+        e.category.toLowerCase().includes(q)
+    );
+  }, [query, expenses]);
+
+  const allFlattenedItems: PaletteItem[] = useMemo(() => {
+    const list: PaletteItem[] = [];
+
+    // Destinations
+    results.destinations.forEach((d) => {
+      list.push({
+        id: `dest-${d.id}`,
+        type: 'destination',
+        title: `${d.name}, ${d.country}`,
+        subtitle: d.description || `Avg. $${d.averageDailyCost}/day`,
+        icon: MapPin,
+        path: `/explore/cities?search=${encodeURIComponent(d.name)}`,
+        meta: `$${d.averageDailyCost}/day`,
+      });
+    });
+
+    // Trips
+    results.trips.forEach((t) => {
+      list.push({
+        id: `trip-${t.id}`,
+        type: 'trip',
+        title: t.title,
+        subtitle: `${t.startDate} • ${t.destinationSummary || 'Planned'}`,
+        icon: Compass,
+        path: `/trips/${t.id}`,
+        meta: t.status,
+      });
+    });
+
+    // Activities
+    results.activities.forEach((a) => {
+      list.push({
+        id: `act-${a.id}`,
+        type: 'activity',
+        title: a.name,
+        subtitle: `${a.category} • ${a.cityName}`,
+        icon: Sparkles,
+        path: `/explore/activities?search=${encodeURIComponent(a.name)}`,
+        meta: a.cost > 0 ? `$${a.cost}` : 'Free',
+      });
+    });
+
+    // Reservations
+    matchedReservations.forEach((r) => {
+      list.push({
+        id: `res-${r.id}`,
+        type: 'reservation',
+        title: `${r.title} (${r.confirmationNumber})`,
+        subtitle: `${r.provider} • ${r.date}`,
+        icon: Ticket,
+        path: '/reservations',
+        meta: r.status,
+      });
+    });
+
+    // Expenses
+    matchedExpenses.forEach((e) => {
+      list.push({
+        id: `exp-${e.id}`,
+        type: 'expense',
+        title: e.title,
+        subtitle: `${e.category} • ${e.date}`,
+        icon: DollarSign,
+        path: '/budget',
+        meta: `$${e.amount}`,
+      });
+    });
+
+    // Actions
+    const q = query.toLowerCase().trim();
+    const actions = q
+      ? defaultActions.filter(
+          (a) =>
+            a.title.toLowerCase().includes(q) ||
+            a.subtitle.toLowerCase().includes(q)
+        )
+      : defaultActions.slice(0, 5);
+
+    actions.forEach((a) => list.push(a));
+
+    return list;
+  }, [results, matchedReservations, matchedExpenses, query, defaultActions]);
+
+  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
         onClose();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex((prev) =>
+          prev < allFlattenedItems.length - 1 ? prev + 1 : 0
+        );
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex((prev) =>
+          prev > 0 ? prev - 1 : allFlattenedItems.length - 1
+        );
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const selected = allFlattenedItems[selectedIndex];
+        if (selected) {
+          handleSelectRoute(selected.path);
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, allFlattenedItems, selectedIndex, onClose]);
 
   if (!isOpen) return null;
 
-  const q = query.toLowerCase().trim();
-
-  const filteredTrips = q
-    ? trips.filter(
-        (t) =>
-          t.title.toLowerCase().includes(q) ||
-          t.destinationSummary?.toLowerCase().includes(q)
-      )
-    : trips.slice(0, 2);
-
-  const filteredCities = q
-    ? cities.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.country.toLowerCase().includes(q) ||
-          c.region?.toLowerCase().includes(q)
-      )
-    : cities.slice(0, 3);
-
-  const filteredActivities = q
-    ? activities.filter(
-        (a) =>
-          a.name.toLowerCase().includes(q) ||
-          a.category.toLowerCase().includes(q) ||
-          a.cityName?.toLowerCase().includes(q)
-      )
-    : activities.slice(0, 3);
-
-  const defaultActions = [
-    {
-      label: 'Plan a New Journey',
-      path: '/trips/create',
-      icon: PlusCircle,
-      desc: 'Build a multi-city itinerary from scratch',
-      category: 'Action',
-    },
-    {
-      label: 'Explore Global Destinations',
-      path: '/explore/cities',
-      icon: MapPin,
-      desc: 'Browse trending cities, landmarks & daily budgets',
-      category: 'Action',
-    },
-    {
-      label: 'Discover Things To Do',
-      path: '/explore/activities',
-      icon: Sparkles,
-      desc: 'Search tours, dining, adventure hikes & museums',
-      category: 'Action',
-    },
-    {
-      label: 'View All My Trips',
-      path: '/trips',
-      icon: Compass,
-      desc: 'Manage your active, planned and past journeys',
-      category: 'Action',
-    },
-    {
-      label: 'Profile & Travel Preferences',
-      path: '/profile',
-      icon: User,
-      desc: 'Edit travel style, currency, and credentials',
-      category: 'Action',
-    },
-  ];
-
-  const filteredActions = q
-    ? defaultActions.filter(
-        (a) =>
-          a.label.toLowerCase().includes(q) ||
-          a.desc.toLowerCase().includes(q)
-      )
-    : defaultActions;
-
   const handleSelectRoute = (path: string) => {
+    if (query.trim() && !recentSearches.includes(query.trim())) {
+      setRecentSearches((prev) => [query.trim(), ...prev.slice(0, 4)]);
+    }
     navigate(path);
     onClose();
   };
@@ -153,202 +320,157 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
-      <div className="flex min-h-full items-start justify-center p-4 pt-16 sm:pt-24 text-center">
+      <div className="flex min-h-full items-start justify-center p-4 pt-16 sm:pt-20 text-center">
         <div
-          className="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all w-full max-w-2xl border border-slate-200"
+          className="relative transform overflow-hidden rounded-2xl bg-white dark:bg-[#1C1C1E] text-left shadow-2xl transition-all w-full max-w-2xl border border-black/[0.08] dark:border-white/[0.10]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Search Input Bar */}
-          <div className="flex items-center px-5 py-4 border-b border-slate-100 gap-3">
-            <Search className="w-5 h-5 text-brand-600 flex-shrink-0" />
+          <div className="flex items-center px-4 py-3.5 border-b border-black/[0.06] dark:border-white/[0.08] gap-3">
+            <Search className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF] flex-shrink-0" />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search destinations, activities, journeys, or actions..."
-              className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
+              placeholder="Search destinations, trips, activities, bookings, expenses, actions..."
+              className="w-full bg-transparent text-sm text-[#1D1D1F] dark:text-[#F5F5F7] placeholder:text-[#8E8E93] dark:placeholder:text-[#98989D] focus:outline-none"
             />
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="text-slate-400 hover:text-slate-600 p-1 rounded-md"
+                className="text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] p-1 rounded-md cursor-pointer"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
             )}
-            <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold text-slate-400 bg-slate-100 rounded-md border border-slate-200">
+            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-semibold text-[#8E8E93] dark:text-[#98989D] bg-black/[0.04] dark:bg-white/[0.06] rounded border border-black/[0.08] dark:border-white/[0.10]">
               ESC
             </kbd>
           </div>
 
           {/* Results List */}
-          <div className="max-h-[60vh] overflow-y-auto p-3 space-y-4">
-            {/* Quick Actions */}
-            {filteredActions.length > 0 && (
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-1.5">
-                  Quick Navigation
+          <div className="max-h-[60vh] overflow-y-auto p-2 space-y-3">
+            {/* Recent Searches (when query empty) */}
+            {!query.trim() && recentSearches.length > 0 && (
+              <div className="px-2 pt-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D] block mb-1.5">
+                  Recent Searches
                 </span>
-                <div className="space-y-1">
-                  {filteredActions.map((action) => {
-                    const Icon = action.icon;
-                    return (
-                      <button
-                        key={action.path}
-                        onClick={() => handleSelectRoute(action.path)}
-                        className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left group cursor-pointer"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="p-2 rounded-xl bg-slate-100 text-slate-700 group-hover:bg-brand-50 group-hover:text-brand-700 transition-colors">
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div className="truncate">
-                            <p className="text-xs font-bold text-slate-900 group-hover:text-brand-600 truncate">
-                              {action.label}
-                            </p>
-                            <p className="text-[11px] text-slate-400 truncate">{action.desc}</p>
-                          </div>
-                        </div>
-                        <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-brand-600 transition-colors" />
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Journeys */}
-            {filteredTrips.length > 0 && (
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-1.5">
-                  My Travel Journeys
-                </span>
-                <div className="space-y-1">
-                  {filteredTrips.map((trip) => (
+                <div className="flex flex-wrap gap-1.5">
+                  {recentSearches.map((rec) => (
                     <button
-                      key={trip.id}
-                      onClick={() => handleSelectRoute(`/trips/${trip.id}`)}
-                      className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left group cursor-pointer"
+                      key={rec}
+                      onClick={() => setQuery(rec)}
+                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/[0.08] text-xs text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.06] dark:hover:bg-white/[0.08] cursor-pointer"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <img
-                          src={trip.coverImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=150&q=80'}
-                          alt={trip.title}
-                          className="w-9 h-9 rounded-xl object-cover"
-                        />
-                        <div className="truncate">
-                          <p className="text-xs font-bold text-slate-900 group-hover:text-brand-600 truncate">
-                            {trip.title}
-                          </p>
-                          <p className="text-[11px] text-slate-400 truncate">
-                            {trip.startDate} • {trip.destinationSummary || 'Planned'}
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 capitalize">
-                        {trip.status}
-                      </span>
+                      <Clock className="w-3 h-3 text-[#8E8E93]" />
+                      <span>{rec}</span>
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Destinations */}
-            {filteredCities.length > 0 && (
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-1.5">
-                  Global Destinations
-                </span>
-                <div className="space-y-1">
-                  {filteredCities.map((city) => (
-                    <button
-                      key={city.id}
-                      onClick={() => handleSelectRoute(`/explore/cities?search=${encodeURIComponent(city.name)}`)}
-                      className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left group cursor-pointer"
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <img
-                          src={city.image}
-                          alt={city.name}
-                          className="w-9 h-9 rounded-xl object-cover"
-                        />
-                        <div className="truncate">
-                          <p className="text-xs font-bold text-slate-900 group-hover:text-brand-600 truncate">
-                            {city.name}, {city.country}
-                          </p>
-                          <p className="text-[11px] text-slate-400 truncate">{city.description}</p>
-                        </div>
-                      </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 uppercase">
-                        ${city.averageDailyCost}/day
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Render Flattened Items */}
+            {allFlattenedItems.length > 0 ? (
+              <div className="space-y-0.5">
+                {allFlattenedItems.map((item, idx) => {
+                  const Icon = item.icon;
+                  const isSelected = idx === selectedIndex;
 
-            {/* Activities */}
-            {filteredActivities.length > 0 && (
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-1.5">
-                  Things to Do
-                </span>
-                <div className="space-y-1">
-                  {filteredActivities.map((act) => (
+                  return (
                     <button
-                      key={act.id}
-                      onClick={() => handleSelectRoute(`/explore/activities?search=${encodeURIComponent(act.name)}`)}
-                      className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left group cursor-pointer"
+                      key={item.id}
+                      onClick={() => handleSelectRoute(item.path)}
+                      onMouseEnter={() => setSelectedIndex(idx)}
+                      className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-colors cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#007AFF] text-white dark:bg-[#0A84FF]'
+                          : 'hover:bg-black/[0.04] dark:hover:bg-white/[0.06] text-[#1D1D1F] dark:text-[#F5F5F7]'
+                      }`}
                     >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <img
-                          src={act.image}
-                          alt={act.name}
-                          className="w-9 h-9 rounded-xl object-cover"
-                        />
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div
+                          className={`p-1.5 rounded-lg flex-shrink-0 ${
+                            isSelected
+                              ? 'bg-white/20 text-white'
+                              : 'bg-black/[0.04] dark:bg-white/[0.06] text-[#8E8E93] dark:text-[#98989D]'
+                          }`}
+                        >
+                          <Icon className="w-3.5 h-3.5" />
+                        </div>
                         <div className="truncate">
-                          <p className="text-xs font-bold text-slate-900 group-hover:text-brand-600 truncate">
-                            {act.name}
+                          <p
+                            className={`text-xs font-semibold truncate ${
+                              isSelected ? 'text-white' : 'text-[#1D1D1F] dark:text-[#F5F5F7]'
+                            }`}
+                          >
+                            {item.title}
                           </p>
-                          <p className="text-[11px] text-slate-400 truncate">
-                            {act.category} • {act.cityName}
+                          <p
+                            className={`text-[11px] truncate ${
+                              isSelected ? 'text-white/80' : 'text-[#8E8E93] dark:text-[#98989D]'
+                            }`}
+                          >
+                            {item.subtitle}
                           </p>
                         </div>
                       </div>
-                      <span className="text-xs font-bold text-slate-900">
-                        {act.cost > 0 ? `$${act.cost}` : 'Free'}
-                      </span>
+
+                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                        {item.meta && (
+                          <span
+                            className={`text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider ${
+                              isSelected
+                                ? 'bg-white/20 text-white'
+                                : 'bg-black/[0.04] dark:bg-white/[0.06] text-[#6E6E73] dark:text-[#98989D]'
+                            }`}
+                          >
+                            {item.meta}
+                          </span>
+                        )}
+                        <ArrowRight
+                          className={`w-3.5 h-3.5 ${
+                            isSelected ? 'text-white' : 'text-[#8E8E93]'
+                          }`}
+                        />
+                      </div>
                     </button>
-                  ))}
-                </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="py-10 text-center text-xs text-[#8E8E93]">
+                No matching results found for "{query}".
               </div>
             )}
-
-            {filteredActions.length === 0 &&
-              filteredTrips.length === 0 &&
-              filteredCities.length === 0 &&
-              filteredActivities.length === 0 && (
-                <div className="py-12 text-center text-xs text-slate-500">
-                  No matching results found for "{query}".
-                </div>
-              )}
           </div>
 
-          {/* Footer */}
-          <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <span>Navigation:</span>
-              <kbd className="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] font-bold">↵</kbd>
-              <span>to select</span>
-            </span>
-            <span>GlobeTrotter Command Palette</span>
+          {/* Footer Navigation Hints */}
+          <div className="px-4 py-2.5 bg-black/[0.02] dark:bg-white/[0.02] border-t border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between text-[11px] text-[#8E8E93] dark:text-[#98989D]">
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1">
+                <kbd className="px-1 py-0.2 bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.10] rounded text-[10px]">
+                  ↑
+                </kbd>
+                <kbd className="px-1 py-0.2 bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.10] rounded text-[10px]">
+                  ↓
+                </kbd>
+                <span>navigate</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <kbd className="px-1.5 py-0.2 bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.10] rounded text-[10px]">
+                  ↵
+                </kbd>
+                <span>open</span>
+              </span>
+            </div>
+            <span>GlobeTrotter Command</span>
           </div>
         </div>
       </div>

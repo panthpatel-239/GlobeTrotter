@@ -13,9 +13,14 @@ import {
   ChevronRight,
   PanelLeftClose,
   PanelLeftOpen,
+  Calendar,
+  Bookmark,
+  DollarSign,
+  Ticket,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { APP_NAME, APP_TAGLINE } from '../../constants';
+import { APP_NAME } from '../../constants';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -59,20 +64,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
       title: 'OVERVIEW',
       items: [
         { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+      ],
+    },
+    {
+      title: 'PLAN',
+      items: [
         { name: 'My Journeys', path: '/trips', icon: Compass, count: tripsCount },
-      ],
-    },
-    {
-      title: 'DISCOVERY',
-      items: [
-        { name: 'Explore Cities', path: '/explore/cities', icon: MapPin },
-        { name: 'Things To Do', path: '/explore/activities', icon: Sparkles },
-      ],
-    },
-    {
-      title: 'PLANNING',
-      items: [
+        { name: 'Travel Calendar', path: '/calendar', icon: Calendar },
         { name: 'Plan New Trip', path: '/trips/create', icon: PlusCircle, highlight: true },
+      ],
+    },
+    {
+      title: 'DISCOVER',
+      items: [
+        { name: 'Destinations', path: '/explore/cities', icon: MapPin },
+        { name: 'Things To Do', path: '/explore/activities', icon: Sparkles },
+        { name: 'Saved & Wishlists', path: '/saved', icon: Bookmark },
+      ],
+    },
+    {
+      title: 'MANAGE',
+      items: [
+        { name: 'Budget & Costs', path: '/budget', icon: DollarSign },
+        { name: 'Reservations', path: '/reservations', icon: Ticket },
+        { name: 'Document Wallet', path: '/documents', icon: ShieldCheck },
       ],
     },
     {
@@ -88,34 +103,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm lg:hidden transition-opacity"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs lg:hidden transition-opacity"
           onClick={onClose}
+          aria-hidden="true"
         />
       )}
 
-      {/* Sidebar container */}
+      {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-slate-950 text-white transition-all duration-300 ease-in-out lg:translate-x-0 border-r border-slate-800/80 ${
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-white dark:bg-[#1C1C1E] text-[#1D1D1F] dark:text-[#F5F5F7] transition-all duration-200 ease-in-out lg:translate-x-0 border-r border-black/[0.08] dark:border-white/[0.10] ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } ${isCollapsed ? 'lg:w-[72px]' : 'lg:w-[260px] w-[260px]'}`}
+        } ${isCollapsed ? 'lg:w-[68px]' : 'lg:w-[240px] w-[240px]'}`}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between px-4 py-5 border-b border-slate-800/80">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-black/[0.06] dark:border-white/[0.08]">
           <RouterNavLink
             to="/dashboard"
-            className="flex items-center gap-3 group overflow-hidden"
+            className="flex items-center gap-2.5 group overflow-hidden"
             onClick={onClose}
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-brand-500 to-ocean-500 text-white shadow-lg shadow-brand-500/25 group-hover:scale-105 transition-transform flex-shrink-0">
-              <Globe2 className="h-5 w-5" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#007AFF] dark:bg-[#0A84FF] text-white shadow-xs group-hover:scale-105 transition-transform flex-shrink-0">
+              <Globe2 className="h-4 w-4" />
             </div>
             {!isCollapsed && (
               <div className="truncate">
-                <span className="font-black text-base tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                <span className="font-bold text-sm tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] block">
                   {APP_NAME}
                 </span>
-                <span className="block text-[9px] uppercase tracking-widest text-brand-400 font-bold">
-                  MODERN EXPEDITION
+                <span className="block text-[9px] uppercase tracking-wider text-[#007AFF] dark:text-[#0A84FF] font-semibold">
+                  Travel Platform
                 </span>
               </div>
             )}
@@ -125,7 +141,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {onToggleCollapse && !isCollapsed && (
             <button
               onClick={onToggleCollapse}
-              className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="hidden lg:flex p-1.5 rounded-md text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
               title="Collapse sidebar"
             >
               <PanelLeftClose className="w-4 h-4" />
@@ -135,19 +151,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Mobile close */}
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 lg:hidden"
+            className="p-1.5 rounded-md text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] lg:hidden cursor-pointer"
             aria-label="Close Sidebar"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Collapsed expand button on desktop */}
         {isCollapsed && onToggleCollapse && (
-          <div className="hidden lg:flex justify-center py-2 border-b border-slate-800">
+          <div className="hidden lg:flex justify-center py-2 border-b border-black/[0.06] dark:border-white/[0.08]">
             <button
               onClick={onToggleCollapse}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-lg text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
               title="Expand sidebar"
             >
               <PanelLeftOpen className="w-4 h-4" />
@@ -156,11 +172,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
 
         {/* Navigation Sections */}
-        <div className="flex-1 overflow-y-auto px-3 py-5 space-y-6">
+        <div className="flex-1 overflow-y-auto px-2.5 py-3 space-y-4">
           {navSections.map((section) => (
-            <div key={section.title} className="space-y-1">
+            <div key={section.title} className="space-y-0.5">
               {!isCollapsed && (
-                <div className="px-3 pb-1.5 text-[10px] font-extrabold uppercase tracking-widest text-slate-500">
+                <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8E8E93] dark:text-[#98989D]">
                   {section.title}
                 </div>
               )}
@@ -179,30 +195,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onClick={onClose}
                     title={isCollapsed ? item.name : undefined}
                     className={`relative flex items-center ${
-                      isCollapsed ? 'justify-center px-0' : 'justify-between px-3'
-                    } py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group ${
+                      isCollapsed ? 'justify-center px-0' : 'justify-between px-2.5'
+                    } py-1.5 rounded-lg text-xs font-medium transition-colors group ${
                       item.highlight
-                        ? 'bg-gradient-to-r from-brand-600 to-brand-500 text-white shadow-md shadow-brand-600/30 hover:shadow-lg hover:from-brand-500 hover:to-brand-400 font-bold'
+                        ? 'bg-[#007AFF] dark:bg-[#0A84FF] text-white shadow-xs hover:bg-[#0062CC] font-semibold'
                         : isActive
-                        ? 'bg-slate-900 text-brand-400 font-bold border-l-2 border-brand-400 shadow-sm'
-                        : 'text-slate-400 hover:bg-slate-900 hover:text-slate-100'
+                        ? 'bg-black/[0.06] dark:bg-white/[0.12] text-[#007AFF] dark:text-[#0A84FF] font-semibold'
+                        : 'text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]'
                     }`}
                   >
-                    <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+                    <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-2.5'}`}>
                       <Icon
                         className={`w-4 h-4 flex-shrink-0 ${
                           item.highlight
                             ? 'text-white'
                             : isActive
-                            ? 'text-brand-400'
-                            : 'text-slate-400 group-hover:text-white'
+                            ? 'text-[#007AFF] dark:text-[#0A84FF]'
+                            : 'text-[#8E8E93] dark:text-[#98989D] group-hover:text-[#1D1D1F] dark:group-hover:text-[#F5F5F7]'
                         }`}
                       />
                       {!isCollapsed && <span>{item.name}</span>}
                     </div>
 
                     {!isCollapsed && item.count !== undefined && item.count > 0 && (
-                      <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-bold">
+                      <span className="px-1.5 py-0.5 rounded-md bg-black/[0.06] dark:bg-white/[0.12] text-[#6E6E73] dark:text-[#98989D] text-[10px] font-semibold">
                         {item.count}
                       </span>
                     )}
@@ -214,38 +230,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* User Card & Logout Footer */}
-        <div className="p-3 border-t border-slate-800/80">
+        <div className="p-2.5 border-t border-black/[0.06] dark:border-white/[0.08]">
           {!isCollapsed ? (
             <>
               <RouterNavLink
                 to="/profile"
                 onClick={onClose}
-                className="flex items-center gap-3 p-2 rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-slate-800 mb-2 transition-colors group cursor-pointer"
+                className="flex items-center gap-2.5 p-2 rounded-xl bg-black/[0.02] dark:bg-white/[0.04] hover:bg-black/[0.06] dark:hover:bg-white/[0.08] mb-1.5 transition-colors group cursor-pointer"
               >
                 <img
                   src={
                     user?.avatarUrl ||
                     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
                   }
-                  alt={user?.name || 'User Avatar'}
-                  className="w-8 h-8 rounded-full object-cover border border-slate-700"
+                  alt={user?.name || 'User'}
+                  className="w-7 h-7 rounded-full object-cover border border-black/[0.08] dark:border-white/[0.10]"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white truncate group-hover:text-brand-400 transition-colors">
+                  <p className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] truncate group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors">
                     {user?.name || 'Alex Rivera'}
                   </p>
-                  <p className="text-[10px] text-slate-400 truncate">
+                  <p className="text-[10px] text-[#8E8E93] dark:text-[#98989D] truncate">
                     {user?.travelStyle || 'Cultural & Adventure'}
                   </p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-slate-300" />
+                <ChevronRight className="w-3.5 h-3.5 text-[#8E8E93] group-hover:text-[#1D1D1F] dark:group-hover:text-[#F5F5F7]" />
               </RouterNavLink>
 
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-slate-400 hover:text-rose-400 hover:bg-rose-950/20 rounded-xl transition-colors cursor-pointer"
+                className="w-full flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#8E8E93] dark:text-[#98989D] hover:text-[#FF3B30] dark:hover:text-[#FF453A] hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
               </button>
             </>
@@ -258,15 +274,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
                   }
                   alt="User"
-                  className="w-8 h-8 rounded-full object-cover border border-slate-700"
+                  className="w-7 h-7 rounded-full object-cover border border-black/[0.08] dark:border-white/[0.10]"
                 />
               </RouterNavLink>
               <button
                 onClick={handleLogout}
-                className="p-2 text-slate-400 hover:text-rose-400 rounded-xl"
+                className="p-1.5 text-[#8E8E93] hover:text-[#FF3B30] dark:hover:text-[#FF453A] rounded-lg"
                 title="Sign Out"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
           )}

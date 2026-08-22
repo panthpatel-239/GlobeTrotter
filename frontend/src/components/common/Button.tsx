@@ -20,21 +20,28 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]';
+  const baseStyles =
+    'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer';
 
   const sizeStyles = {
-    sm: 'px-3 py-1.5 text-xs gap-1.5',
-    md: 'px-4 py-2.5 text-sm gap-2',
-    lg: 'px-6 py-3 text-base gap-2.5',
+    sm: 'px-2.5 py-1 text-xs gap-1.5',
+    md: 'px-3.5 py-1.5 text-xs sm:text-sm gap-2',
+    lg: 'px-5 py-2.5 text-sm gap-2',
   };
 
   const variantStyles = {
-    primary: 'bg-brand-600 text-white hover:bg-brand-700 shadow-sm focus:ring-brand-500 hover:shadow',
-    secondary: 'bg-slate-900 text-white hover:bg-slate-800 shadow-sm focus:ring-slate-700',
-    outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 focus:ring-slate-400',
-    danger: 'bg-rose-600 text-white hover:bg-rose-700 shadow-sm focus:ring-rose-500',
-    ghost: 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:ring-slate-300',
-    glass: 'bg-white/80 backdrop-blur-md border border-white/40 text-slate-800 hover:bg-white focus:ring-slate-300 shadow-sm',
+    primary:
+      'bg-[#007AFF] hover:bg-[#0062CC] dark:bg-[#0A84FF] dark:hover:bg-[#409CFF] text-white shadow-xs',
+    secondary:
+      'bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-[#1D1D1F] hover:bg-black/80 dark:hover:bg-white/90',
+    outline:
+      'border border-black/[0.08] dark:border-white/[0.10] bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]',
+    danger:
+      'bg-[#FF3B30] hover:bg-[#D70015] dark:bg-[#FF453A] dark:hover:bg-[#FF6961] text-white shadow-xs',
+    ghost:
+      'text-[#6E6E73] dark:text-[#98989D] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7]',
+    glass:
+      'bg-white/80 dark:bg-[#2C2C2E]/80 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.10] text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-white dark:hover:bg-[#2C2C2E]',
   };
 
   return (
@@ -44,7 +51,7 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {isLoading ? (
-        <Loader2 className="w-4 h-4 animate-spin" />
+        <Loader2 className="w-3.5 h-3.5 animate-spin" />
       ) : (
         leftIcon && <span className="flex-shrink-0">{leftIcon}</span>
       )}
