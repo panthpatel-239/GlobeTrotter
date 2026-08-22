@@ -49,6 +49,7 @@ export function App() {
                 {/* Trips */}
                 <Route path="/trips" element={<TripsListPage />} />
                 <Route path="/trips/create" element={<CreateTripPage />} />
+                <Route path="/trips/new" element={<CreateTripPage />} />
                 <Route path="/trips/:id" element={<TripDetailPage />} />
                 <Route path="/trips/:id/edit" element={<EditTripPage />} />
                 <Route path="/trips/:id/itinerary" element={<ItineraryBuilderPage />} />
